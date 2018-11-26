@@ -36,7 +36,7 @@ export default class MovieList extends Component {
       })
       .then(data => {
         this.setState({
-          movies: data.results,
+          movies: data.results
         });
         this.props.getTotalPages(data.total_pages);
       });
@@ -61,14 +61,27 @@ export default class MovieList extends Component {
 
   render() {
     const { movies } = this.state;
-    //console.log("render");
+    const {
+      user,
+      addMovieToFavorite,
+      addMovieToWatchlist,
+      showModal,
+      toggleModal
+    } = this.props;
 
     return (
       <div className="row">
         {movies.map(movie => {
           return (
             <div key={movie.id} className="col-6 mb-4">
-              <MovieItem item={movie} />
+              <MovieItem
+                item={movie}
+                user={user}
+                addMovieToFavorite={addMovieToFavorite}
+                addMovieToWatchlist={addMovieToWatchlist}
+                showModal={showModal}
+                toggleModal={toggleModal}
+              />
             </div>
           );
         })}

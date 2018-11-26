@@ -1,3 +1,32 @@
 body {
   background: #fdfdfd; 
 }
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% -50%);
+  width: 460px;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.buttons-wrap {
+      justify-content: flex-end;
+      display: flex;
+}
+
+.buttons-wrap > span {
+    margin: 0 6px 0 0;
+}
+
+.card-body span {
+  cursor: pointer;
+}
+
+.card-body h6 {
+  min-height: 58px;
+}
