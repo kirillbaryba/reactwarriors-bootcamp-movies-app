@@ -89,11 +89,13 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
+  
     if (session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
       ).then(user => {
         this.updateUser(user);
+        this.updateSessionId(session_id);
       });
     }
   }
