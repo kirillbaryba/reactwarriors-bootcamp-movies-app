@@ -10,6 +10,7 @@ export default class Watchlist extends React.Component {
 
     this.state = {
       bookmark: false,
+      watchlist: false,
       highlight: ""
     };
   }
@@ -64,9 +65,10 @@ export default class Watchlist extends React.Component {
 
   render() {
     const bookmark = this.state.bookmark ? "fas" : "far";
+    const highlight = this.state.highlight ? "red" : "";
     return (
       <div>
-        <span onClick={this.addToFavorite}>
+        <span onClick={this.addToWatch} className={highlight}>
           <FontAwesomeIcon icon={[`${bookmark}`, "bookmark"]} />
         </span>
       </div>

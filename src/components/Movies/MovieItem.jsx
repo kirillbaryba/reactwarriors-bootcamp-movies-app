@@ -1,10 +1,7 @@
 import React from "react";
 import Favorite from "./Favorite";
 import Watchlist from "./Wathclist";
-import Cookies from "universal-cookie";
-import { API_URL, API_KEY_3 } from "../../api/api";
 
-const cookies = new Cookies();
 
 export default class MovieItem extends React.Component {
   constructor() {
@@ -33,7 +30,7 @@ export default class MovieItem extends React.Component {
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="buttons-wrap">
             <Favorite item={item} user={user} />
-            <Watchlist />
+            <Watchlist item={item} user={user} />
           </div>
         </div>
       </div>

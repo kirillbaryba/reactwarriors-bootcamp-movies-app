@@ -9,9 +9,9 @@ export default class Favorite extends React.Component {
     super();
 
     this.state = {
+      favorite: false,
       heart: false,
-      highlight: "",
-      favorite: false
+      highlight: ""
     };
   }
 
@@ -64,7 +64,7 @@ export default class Favorite extends React.Component {
 
   render() {
     const heart = this.state.heart ? "fas" : "far";
-    const highlight = this.state.highlight ? "red" : null;
+    const highlight = this.state.highlight ? "red" : "";
     return (
       <div>
         <span onClick={this.addToFavorite} className={highlight}>
