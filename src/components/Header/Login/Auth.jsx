@@ -1,8 +1,9 @@
 import React from "react";
 import Field from "./Field";
+import { AppContext } from "../../App";
 import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
 
-export default class Auth extends React.Component {
+class Auth extends React.Component {
   constructor() {
     super();
 
@@ -16,6 +17,7 @@ export default class Auth extends React.Component {
   }
 
   onSubmit = () => {
+    
     this.setState({
       submitButton: true
     });
@@ -95,19 +97,19 @@ export default class Auth extends React.Component {
     }
   };
 
-  onChangeValue = e => {
-    let { name, value } = e.target;
+  // onChangeValue = e => {
+  //   let { name, value } = e.target;
 
-    this.setState(prevState => ({
-      [name]: value,
-      errors: {
-        ...prevState.errors,
-        base: null,
-        [name]: null
-      },
-      submitButton: false
-    }));
-  };
+  //   this.setState(prevState => ({
+  //     [name]: value,
+  //     errors: {
+  //       ...prevState.errors,
+  //       base: null,
+  //       [name]: null
+  //     },
+  //     submitButton: false
+  //   }));
+  // };
 
   handleBlur = () => {
     const errors = this.validateFields();
@@ -133,7 +135,7 @@ export default class Auth extends React.Component {
     }
 
     if (this.state.repeatPassword !== this.state.password) {
-      errors.repeatPassword = "Passords must be equal"
+      errors.repeatPassword = "Passords must be equal";
     }
 
     return errors;
@@ -149,7 +151,7 @@ export default class Auth extends React.Component {
           placeholder="Enter username"
           name="username"
           value={this.state.username}
-          onChange={this.onChangeValue}
+          // onChange={this.onChangeValue}
           error={this.state.errors.username}
           onBlur={this.handleBlur}
         />
@@ -160,7 +162,7 @@ export default class Auth extends React.Component {
           placeholder="Enter password"
           name="password"
           value={this.state.password}
-          onChange={this.onChangeValue}
+          // onChange={this.onChangeValue}
           error={this.state.errors.password}
           onBlur={this.handleBlur}
         />
@@ -171,7 +173,7 @@ export default class Auth extends React.Component {
           placeholder="Repeat password"
           name="repeatPassword"
           value={this.state.repeatPassword}
-          onChange={this.onChangeValue}
+          // onChange={this.onChangeValue}
           error={this.state.errors.repeatPassword}
           onBlur={this.handleBlur}
         />
@@ -192,3 +194,22 @@ export default class Auth extends React.Component {
     );
   }
 }
+
+export default props => {
+  console.log(props, "props auth");
+  return (
+    <AppContext.Consumer>
+      {({ updateUser, updateSessionId, session_id }) => {
+        console.log( "context from auth component");
+        return (
+          <Auth
+            updateUser={updateUser}
+            updateSessionId={updateSessionId}
+            session_id={session_id}
+            {...props}
+          />
+        );
+      }}
+    </AppContext.Consumer>
+  );
+};

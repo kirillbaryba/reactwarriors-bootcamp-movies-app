@@ -1,5 +1,5 @@
 body {
-  background: #fdfdfd; 
+  background: #fdfdfd;
 }
 
 .form-container {
@@ -19,12 +19,12 @@ body {
 }
 
 .buttons-wrap {
-      justify-content: flex-end;
-      display: flex;
+  justify-content: flex-end;
+  display: flex;
 }
 
-.buttons-wrap > span {
-    margin: 0 6px 0 0;
+.icon-favorite {
+  margin: 0 6px 0 0;
 }
 
 .card-body span {

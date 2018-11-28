@@ -13,6 +13,10 @@ library.add(fas, far);
 
 const cookies = new Cookies();
 
+export const AppContext = React.createContext();
+
+console.log(AppContext);
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -27,13 +31,13 @@ export default class App extends React.Component {
       session_id: null,
       page: 1,
       total_pages: "",
-      showModal: false
+      showLoginModal: false
     };
   }
 
-  toggleModal = () => {
+  toggleLoginModal = () => {
     this.setState(prevState => ({
-      showModal: !prevState.showModal
+      showLoginModal: !prevState.showLoginModal
     }));
   };
 
@@ -89,7 +93,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
-  
+
     if (session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
@@ -106,58 +110,67 @@ export default class App extends React.Component {
       page,
       total_pages,
       user,
-      showModal
+      showLoginModal,
+      session_id
     } = this.state;
     return (
-      <div>
-        <Header
-          updateUser={this.updateUser}
-          user={user}
-          updateSessionId={this.updateSessionId}
-          toggleModal={this.toggleModal}
-          showModal={showModal}
-        />
-        <div className="container">
-          <div className="row mt-4">
-            <div className="col-4">
-              <div className="card" style={{ width: "100%" }}>
-                <div className="card-body">
-                  <h3>Фильтры:</h3>
-                  <Filters
-                    filters={filters}
-                    onChangeFilters={this.onChangeFilters}
-                    page={page}
-                    total_pages={total_pages}
-                    onChangePage={this.onChangePage}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={this.clearAllFilters}
-                  >
-                    Очистить Фильтры
-                  </button>
+      <AppContext.Provider
+        value={{
+          user: user,
+          updateUser: this.updateUser,
+          updateSessionId: this.updateSessionId,
+          session_id: session_id
+        }}
+      >
+        <div>
+          <Header
+            user={user}
+            toggleLoginModal={this.toggleLoginModal}
+            showLoginModal={showLoginModal}
+          />
+          <div className="container">
+            <div className="row mt-4">
+              <div className="col-4">
+                <div className="card" style={{ width: "100%" }}>
+                  <div className="card-body">
+                    <h3>Фильтры:</h3>
+                    <Filters
+                      filters={filters}
+                      onChangeFilters={this.onChangeFilters}
+                      page={page}
+                      total_pages={total_pages}
+                      onChangePage={this.onChangePage}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={this.clearAllFilters}
+                    >
+                      Очистить Фильтры
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="col-8">
-              {
-                <MoviesList
-                  filters={filters}
-                  page={page}
-                  onChangePage={this.onChangePage}
-                  onChangeFilters={this.onChangeFilters}
-                  getTotalPages={this.getTotalPages}
-                  user={user}
-                  toggleModal={this.toggleModal}
-                  showModal={showModal}
-                />
-              }
+              <div className="col-8">
+                {
+                  <MoviesList
+                    filters={filters}
+                    page={page}
+                    onChangePage={this.onChangePage}
+                    onChangeFilters={this.onChangeFilters}
+                    getTotalPages={this.getTotalPages}
+                    user={user}
+                    toggleLoginModal={this.toggleLoginModal}
+                    showLoginModal={showLoginModal}
+                    session_id={session_id}
+                  />
+                }
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </AppContext.Provider>
     );
   }
 }

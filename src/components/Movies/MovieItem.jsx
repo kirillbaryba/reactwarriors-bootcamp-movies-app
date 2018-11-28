@@ -2,7 +2,6 @@ import React from "react";
 import Favorite from "./Favorite";
 import Watchlist from "./Wathclist";
 
-
 export default class MovieItem extends React.Component {
   constructor() {
     super();
@@ -15,7 +14,7 @@ export default class MovieItem extends React.Component {
   }
 
   render() {
-    const { item, user } = this.props;
+    const { item, user, session_id, toggleModal } = this.props;
 
     return (
       <div className="card" style={{ width: "100%" }}>
@@ -29,8 +28,18 @@ export default class MovieItem extends React.Component {
           <h6 className="card-title">{item.title}</h6>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="buttons-wrap">
-            <Favorite item={item} user={user} />
-            <Watchlist item={item} user={user} />
+            <Favorite
+              item={item}
+              user={user}
+              session_id={session_id}
+              toggleModal={toggleModal}
+            />
+            <Watchlist
+              item={item}
+              user={user}
+              session_id={session_id}
+              toggleModal={toggleModal}
+            />
           </div>
         </div>
       </div>

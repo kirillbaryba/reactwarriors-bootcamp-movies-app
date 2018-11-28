@@ -3,24 +3,21 @@ import { Modal, ModalBody } from "reactstrap";
 import Auth from "./Auth";
 
 export default class Login extends React.Component {
-  // `${API_URL}/authentication/token/new?api_key=${API_KEY_3}`
-  // `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`
-  // `https://api.themoviedb.org/3/authentication/session/new?api_key=${API_KEY_3}`
 
   render() {
-    const { updateUser, updateSessionId, showModal, toggleModal } = this.props;
+    const { showLoginModal, toggleLoginModal } = this.props;
     return (
       <div>
         <button
           className="btn btn-success"
           type="button"
-          onClick={toggleModal}
+          onClick={toggleLoginModal}
         >
           Login
         </button>
-        <Modal isOpen={showModal} toggle={toggleModal}>
+        <Modal isOpen={showLoginModal} toggle={toggleLoginModal}>
           <ModalBody>
-            <Auth updateUser={updateUser} updateSessionId={updateSessionId} />
+            <Auth />
           </ModalBody>
         </Modal>
       </div>

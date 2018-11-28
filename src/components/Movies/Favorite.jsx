@@ -1,8 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { API_URL, API_KEY_3 } from "../../api/api";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
 
 export default class Favorite extends React.Component {
   constructor() {
@@ -11,18 +9,16 @@ export default class Favorite extends React.Component {
     this.state = {
       favorite: false,
       heart: false,
-      highlight: ""
+      highlight: false
     };
   }
 
-  addMovieToFavorite = (movieId, userId, favorite) => {
-    const session_id = cookies.get("session_id") || null;
-
+  addMovieToFavorite = (movieId, userId, favorite, session_id) => {
     this.setState(
       {
         heart: !this.state.heart,
         favorite: !this.state.favorite,
-        highlight: "red"
+        highlight: !this.state.highlight
       },
       () => {
         fetch(
@@ -53,12 +49,16 @@ export default class Favorite extends React.Component {
   };
 
   addToFavorite = () => {
-    const session_id = cookies.get("session_id") || null;
-    const { user, item } = this.props;
+    const { user, item, session_id, toggleModal } = this.props;
     if (session_id) {
-      this.addMovieToFavorite(item.id, user.id, !this.state.favorite);
+      this.addMovieToFavorite(
+        item.id,
+        user.id,
+        !this.state.favorite,
+        session_id
+      );
     } else {
-      this.props.toggleModal();
+      toggleModal();
     }
   };
 
@@ -66,11 +66,12 @@ export default class Favorite extends React.Component {
     const heart = this.state.heart ? "fas" : "far";
     const highlight = this.state.highlight ? "red" : "";
     return (
-      <div>
-        <span onClick={this.addToFavorite} className={highlight}>
-          <FontAwesomeIcon icon={[`${heart}`, "heart"]} />
-        </span>
-      </div>
+      <span
+        onClick={this.addToFavorite}
+        className={`${highlight} icon-favorite`}
+      >
+        <FontAwesomeIcon icon={[`${heart}`, "heart"]} />
+      </span>
     );
   }
 }

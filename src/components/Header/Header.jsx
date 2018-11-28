@@ -6,10 +6,8 @@ class Header extends React.Component {
   render() {
     const {
       user,
-      updateUser,
-      updateSessionId,
-      showModal,
-      toggleModal
+      showLoginModal,
+      toggleLoginModal
     } = this.props;
 
     return (
@@ -24,10 +22,8 @@ class Header extends React.Component {
             <User user={user} />
           ) : (
             <Login
-              updateUser={updateUser}
-              updateSessionId={updateSessionId}
-              toggleModal={toggleModal}
-              showModal={showModal}
+              toggleLoginModal={toggleLoginModal}
+              showLoginModal={showLoginModal}
             />
           )}
         </div>
