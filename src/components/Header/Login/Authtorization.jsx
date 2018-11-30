@@ -1,72 +1,57 @@
 import React from "react";
 import Field from "./Field";
-import { AppContext } from "../../App";
-import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
+import CallApi from "../../../api/api";
+import AppContextHOC from "../../HOC/AppContextHOC";
 
 class Auth extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      username: "",
-      password: "",
-      repeatPassword: "",
+      username: "dima.machulsky@gmail.com",
+      password: "password666",
+      repeatPassword: "password666",
       errors: {},
       submitButton: false
     };
   }
 
   onSubmit = () => {
-    
+    const { toggleLoginModal } = this.props;
     this.setState({
       submitButton: true
     });
 
-    fetchApi(`${API_URL}/authentication/token/new?api_key=${API_KEY_3}`)
+    CallApi.get("/authentication/token/new")
       .then(data => {
-        return fetchApi(
-          `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
-          {
-            method: "post",
-            mode: "cors",
-            headers: {
-              "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-              username: this.state.username,
-              password: this.state.password,
-              request_token: data.request_token
-            })
+        return CallApi.post("/authentication/token/validate_with_login", {
+          body: {
+            username: this.state.username,
+            password: this.state.password,
+            request_token: data.request_token
           }
-        ).then(data => {
-          return fetchApi(
-            `${API_URL}/authentication/session/new?api_key=${API_KEY_3}`,
-            {
-              method: "post",
-              mode: "cors",
-              headers: {
-                "Content-type": "application/json"
-              },
-              body: JSON.stringify({
-                request_token: data.request_token
-              })
+        }).then(data => {
+          return CallApi.post("/authentication/session/new", {
+            body: {
+              request_token: data.request_token
             }
-          );
+          });
         });
       })
       .then(data => {
         this.props.updateSessionId(data.session_id);
 
-        return fetchApi(
-          `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-            data.session_id
-          }`
-        ).then(user => {
+        return CallApi.get("/account", {
+          params: {
+            session_id: data.session_id
+          }
+        }).then(user => {
           console.log(user);
           this.setState({
             submitButton: true
           });
           this.props.updateUser(user);
+          toggleLoginModal();
         });
       })
       .catch(error => {
@@ -97,19 +82,19 @@ class Auth extends React.Component {
     }
   };
 
-  // onChangeValue = e => {
-  //   let { name, value } = e.target;
+  onChangeValue = e => {
+    let { name, value } = e.target;
 
-  //   this.setState(prevState => ({
-  //     [name]: value,
-  //     errors: {
-  //       ...prevState.errors,
-  //       base: null,
-  //       [name]: null
-  //     },
-  //     submitButton: false
-  //   }));
-  // };
+    this.setState(prevState => ({
+      [name]: value,
+      errors: {
+        ...prevState.errors,
+        base: null,
+        [name]: null
+      },
+      submitButton: false
+    }));
+  };
 
   handleBlur = () => {
     const errors = this.validateFields();
@@ -151,7 +136,7 @@ class Auth extends React.Component {
           placeholder="Enter username"
           name="username"
           value={this.state.username}
-          // onChange={this.onChangeValue}
+          onChange={this.onChangeValue}
           error={this.state.errors.username}
           onBlur={this.handleBlur}
         />
@@ -162,7 +147,7 @@ class Auth extends React.Component {
           placeholder="Enter password"
           name="password"
           value={this.state.password}
-          // onChange={this.onChangeValue}
+          onChange={this.onChangeValue}
           error={this.state.errors.password}
           onBlur={this.handleBlur}
         />
@@ -173,7 +158,7 @@ class Auth extends React.Component {
           placeholder="Repeat password"
           name="repeatPassword"
           value={this.state.repeatPassword}
-          // onChange={this.onChangeValue}
+          onChange={this.onChangeValue}
           error={this.state.errors.repeatPassword}
           onBlur={this.handleBlur}
         />
@@ -195,21 +180,4 @@ class Auth extends React.Component {
   }
 }
 
-export default props => {
-  console.log(props, "props auth");
-  return (
-    <AppContext.Consumer>
-      {({ updateUser, updateSessionId, session_id }) => {
-        console.log( "context from auth component");
-        return (
-          <Auth
-            updateUser={updateUser}
-            updateSessionId={updateSessionId}
-            session_id={session_id}
-            {...props}
-          />
-        );
-      }}
-    </AppContext.Consumer>
-  );
-};
+export default AppContextHOC(Auth);

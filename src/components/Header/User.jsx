@@ -1,35 +1,65 @@
 import React from "react";
-import { AppContext } from "../App";
+import {
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown
+} from "reactstrap";
+import CallApi from "../../api/api";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 class User extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      logoutDropdown: false
+    };
+  }
+
+  logoutDropdownToggle = () => {
+    this.setState({
+      logoutDropdown: !this.state.logoutDropdown
+    });
+  };
+
+  logout = () => {
+    const { resetUserInfo } = this.props;
+
+    CallApi.delete("/authentication/session", {
+      body: {
+        session_id: this.props.session_id
+      }
+    })
+      .then(data => console.log(data));
+    resetUserInfo();
+  };
+
   render() {
     const { user } = this.props;
+
     return (
-      <div>
-        <img
-          className="rounded-circle"
-          src={`https://www.gravatar.com/avatar/${
-            user.avatar.gravatar.hash
-          }.jpg?s=64`}
-          alt=""
-        />
-      </div>
+      <React.Fragment>
+        <UncontrolledDropdown>
+          <DropdownToggle nav>
+            <img
+              className="rounded-circle"
+              src={`https://www.gravatar.com/avatar/${
+                user.avatar.gravatar.hash
+              }.jpg?s=40`}
+              alt="avatar"
+              onClick={this.logoutDropdownToggle}
+            />
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header>Выйти?</DropdownItem>
+            <DropdownItem onClick={this.logout}>Да</DropdownItem>
+            <DropdownItem>Нет</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </React.Fragment>
     );
   }
 }
 
-const UserContainer = (props) => {
-  
-  return (
-    <AppContext.Consumer>
-      {context => {
-        console.log(context, "context from user component");
-        return <User user={context.user} {...props}/>;
-      }}
-    </AppContext.Consumer>
-  );
-};
-
-UserContainer.displayName = "UserContainer";
-
-export default UserContainer;
+export default AppContextHOC(User);

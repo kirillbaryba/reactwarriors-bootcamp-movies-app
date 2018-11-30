@@ -1,6 +1,6 @@
 import React from "react";
-import { API_URL, API_KEY_3 } from "../../api/api";
-import queryString from "query-string";
+import Loader from "react-loader-spinner";
+import CallApi from "../../api/api";
 
 export default Component =>
   class MoviesHOC extends React.Component {
@@ -8,7 +8,8 @@ export default Component =>
       super();
 
       this.state = {
-        movies: []
+        movies: [],
+        isLoading: false
       };
     }
 
@@ -16,7 +17,6 @@ export default Component =>
       const { sort_by, primary_release_year, with_genres } = filters;
 
       const queryStringParams = {
-        api_key: API_KEY_3,
         language: "ru-RU",
         sort_by: sort_by,
         page: page,
@@ -26,29 +26,23 @@ export default Component =>
       if (with_genres.length > 0)
         queryStringParams.with_genres = with_genres.join(",");
 
-      const link = `${API_URL}/discover/movie?${queryString.stringify(
-        queryStringParams
-      )}`;
-
-      fetch(link)
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          this.setState({
-            movies: data.results
-          });
-          this.props.getTotalPages(data.total_pages);
+      CallApi.get("/discover/movie", {
+        params: queryStringParams
+      }).then(data => {
+        this.setState({
+          movies: data.results,
+          isLoading: false
         });
+        this.props.getTotalPages(data.total_pages);
+      });
     };
 
     componentDidMount() {
+      this.setState({ isLoading: true });
       this.getMovies(this.props.filters, this.props.page);
     }
 
     componentDidUpdate(prevProps) {
-      //console.log("componentDidUpdate", prevProps.page, this.props.page);
-
       if (this.props.filters !== prevProps.filters) {
         this.props.onChangePage(1, this.state.total_pages);
         this.getMovies(this.props.filters, 1);
@@ -60,8 +54,16 @@ export default Component =>
     }
 
     render() {
-      const { movies } = this.state;
-      const { user, showModal, toggleModal, session_id } = this.props;
+      const { movies, isLoading } = this.state;
+      const { user, showModal, toggleLoginModal, session_id } = this.props;
+
+      if (isLoading) {
+        return (
+          <span className="spinner">
+            <Loader type="TailSpin" color="salmon" height={80} width={80} />
+          </span>
+        );
+      }
 
       return (
         <Component
@@ -69,7 +71,7 @@ export default Component =>
           user={user}
           session_id={session_id}
           showModal={showModal}
-          toggleModal={toggleModal}
+          toggleLoginModal={toggleLoginModal}
         />
       );
     }

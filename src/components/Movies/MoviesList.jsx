@@ -3,7 +3,13 @@ import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
 import MoviesHOC from "./MoviesHOC";
 
-const MoviesList = ({ movies, user, session_id, showModal, toggleModal }) => (
+const MoviesList = ({
+  movies,
+  user,
+  session_id,
+  showModal,
+  toggleLoginModal
+}) => (
   <div className="row">
     {movies.map(movie => {
       return (
@@ -13,7 +19,7 @@ const MoviesList = ({ movies, user, session_id, showModal, toggleModal }) => (
             user={user}
             session_id={session_id}
             showModal={showModal}
-            toggleModal={toggleModal}
+            toggleLoginModal={toggleLoginModal}
           />
         </div>
       );

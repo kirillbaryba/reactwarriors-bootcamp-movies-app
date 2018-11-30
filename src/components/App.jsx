@@ -3,7 +3,9 @@ import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import Cookies from "universal-cookie";
-import { API_URL, API_KEY_3, fetchApi } from "../api/api";
+import Authtorization from "./Header/Login/Authtorization";
+import CallApi from "../api/api";
+import { Modal, ModalBody } from "reactstrap";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -14,8 +16,6 @@ library.add(fas, far);
 const cookies = new Cookies();
 
 export const AppContext = React.createContext();
-
-console.log(AppContext);
 
 export default class App extends React.Component {
   constructor() {
@@ -57,6 +57,13 @@ export default class App extends React.Component {
     });
   };
 
+  resetUserInfo = () => {
+    this.setState({
+      user: null,
+      session_id: null
+    });
+  };
+
   onChangeFilters = e => {
     const newFilters = {
       ...this.state.filters,
@@ -95,9 +102,11 @@ export default class App extends React.Component {
     const session_id = cookies.get("session_id");
 
     if (session_id) {
-      fetchApi(
-        `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
-      ).then(user => {
+      CallApi.get("/account", {
+        params: {
+          session_id: session_id
+        }
+      }).then(user => {
         this.updateUser(user);
         this.updateSessionId(session_id);
       });
@@ -113,21 +122,24 @@ export default class App extends React.Component {
       showLoginModal,
       session_id
     } = this.state;
+
     return (
       <AppContext.Provider
         value={{
           user: user,
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
-          session_id: session_id
+          session_id: session_id,
+          resetUserInfo: this.resetUserInfo
         }}
       >
         <div>
-          <Header
-            user={user}
-            toggleLoginModal={this.toggleLoginModal}
-            showLoginModal={showLoginModal}
-          />
+          <Header user={user} toggleLoginModal={this.toggleLoginModal} />
+          <Modal isOpen={showLoginModal} toggle={this.toggleLoginModal}>
+            <ModalBody>
+              <Authtorization toggleLoginModal={this.toggleLoginModal} />
+            </ModalBody>
+          </Modal>
           <div className="container">
             <div className="row mt-4">
               <div className="col-4">
