@@ -14,6 +14,10 @@ export default Component =>
     }
 
     getMovies = (filters, page) => {
+      this.setState({
+        isLoading: true
+      })
+
       const { sort_by, primary_release_year, with_genres } = filters;
 
       const queryStringParams = {

@@ -13,7 +13,7 @@ const ActionIconsHOC = (Component, type) =>
       };
     }
 
-    addToFavorite = () => {
+    addMovieAction = () => {
       const { user, item, session_id, toggleLoginModal } = this.props;
       console.log(this.props);
       if (session_id) {
@@ -45,7 +45,7 @@ const ActionIconsHOC = (Component, type) =>
       return (
         <Component
           {...this.props}
-          onClick={this.addToFavorite}
+          onClick={this.addMovieAction}
           isAdd={this.state.isAdd}
         />
       );
