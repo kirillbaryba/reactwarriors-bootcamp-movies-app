@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default class UISelect extends React.Component {
+export default class UISelect extends React.PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
@@ -12,7 +12,7 @@ export default class UISelect extends React.Component {
     console.log("UISelect render");
     return (
       <div className="form-group">
-        <label htmlFor={id}>{labelText}</label>;
+        <label htmlFor={id}>{labelText}</label>
         <select
           id={id}
           className="form-control"
