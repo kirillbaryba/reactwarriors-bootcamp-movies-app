@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ActionIconsHOC from "./ActionIconsHOC";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 class WatchlistIcon extends React.Component {
   render() {
@@ -16,4 +17,4 @@ class WatchlistIcon extends React.Component {
   }
 }
 
-export default ActionIconsHOC(WatchlistIcon, "watchlist");
+export default AppContextHOC(ActionIconsHOC(WatchlistIcon, "watchlist"));

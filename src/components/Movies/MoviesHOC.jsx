@@ -16,7 +16,7 @@ export default Component =>
     getMovies = (filters, page) => {
       this.setState({
         isLoading: true
-      })
+      });
 
       const { sort_by, primary_release_year, with_genres } = filters;
 
@@ -59,7 +59,14 @@ export default Component =>
 
     render() {
       const { movies, isLoading } = this.state;
-      const { user, showModal, toggleLoginModal, session_id } = this.props;
+      const {
+        user,
+        showModal,
+        toggleLoginModal,
+        session_id,
+        userFavoriteMovies,
+        userWatchListMovies
+      } = this.props;
 
       if (isLoading) {
         return (
@@ -76,6 +83,8 @@ export default Component =>
           session_id={session_id}
           showModal={showModal}
           toggleLoginModal={toggleLoginModal}
+          userFavoriteMovies={userFavoriteMovies}
+          userWatchListMovies={userWatchListMovies}
         />
       );
     }

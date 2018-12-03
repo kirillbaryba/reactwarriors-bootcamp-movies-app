@@ -14,8 +14,14 @@ const ActionIconsHOC = (Component, type) =>
     }
 
     addMovieAction = () => {
-      const { user, item, session_id, toggleLoginModal } = this.props;
-      console.log(this.props);
+      const {
+        user,
+        item,
+        session_id,
+        toggleLoginModal,
+        getAddedMovies
+      } = this.props;
+
       if (session_id) {
         this.setState(
           {
@@ -31,15 +37,23 @@ const ActionIconsHOC = (Component, type) =>
                 media_id: item.id,
                 [type]: this.state.isAdd
               }
-            }).then(data => {
-              console.log(data);
             });
+            getAddedMovies(user.id, session_id, type);
           }
         );
       } else {
         toggleLoginModal();
       }
     };
+
+    componentDidUpdate(prevProps, prevState) {
+      if (prevProps[type] !== this.props[type]) {
+        const a = this.props[type].includes(this.props.item.id);
+        this.setState({
+          isAdd: a
+        });
+      }
+    }
 
     render() {
       return (
