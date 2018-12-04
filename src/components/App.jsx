@@ -77,8 +77,10 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: newFilters
     }));
-    this.getAddedMovies(user.id, session_id, "favorite");
-    this.getAddedMovies(user.id, session_id, "watchlist");
+    if (user) {
+      this.getAddedMovies(user.id, session_id, "favorite");
+      this.getAddedMovies(user.id, session_id, "watchlist");
+    }
   };
 
   onChangePage = page => {

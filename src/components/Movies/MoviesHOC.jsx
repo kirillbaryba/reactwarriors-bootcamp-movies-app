@@ -53,14 +53,20 @@ export default Component =>
       if (!_.isEqual(this.props.filters, prevProps.filters)) {
         this.props.onChangePage(1, this.state.total_pages);
         this.getMovies(this.props.filters, 1);
-        this.props.getAddedMovies(user.id, session_id, "favorite");
-        this.props.getAddedMovies(user.id, session_id, "watchlist");
+        if (user) {
+          this.props.getAddedMovies(user.id, session_id, "favorite");
+          this.props.getAddedMovies(user.id, session_id, "watchlist");
+        } else {
+          return null;
+        }
       }
 
       if (!_.isEqual(this.props.page, prevProps.page)) {
         this.getMovies(this.props.filters, this.props.page);
-        this.props.getAddedMovies(user.id, session_id, "favorite");
-        this.props.getAddedMovies(user.id, session_id, "watchlist");
+        if (user) {
+          this.props.getAddedMovies(user.id, session_id, "favorite");
+          this.props.getAddedMovies(user.id, session_id, "watchlist");
+        }
       }
     }
 
