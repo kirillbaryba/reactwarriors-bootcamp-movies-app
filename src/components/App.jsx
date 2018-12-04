@@ -31,7 +31,9 @@ export default class App extends React.Component {
       session_id: null,
       page: 1,
       total_pages: "",
-      showLoginModal: false
+      showLoginModal: false,
+      favorite: [],
+      watchlist: []
     };
   }
 
@@ -60,11 +62,14 @@ export default class App extends React.Component {
   resetUserInfo = () => {
     this.setState({
       user: null,
-      session_id: null
+      session_id: null,
+      favorite: [],
+      watchlist: []
     });
   };
 
   onChangeFilters = e => {
+    const { user, session_id } = this.state;
     const newFilters = {
       ...this.state.filters,
       [e.target.name]: e.target.value
@@ -72,6 +77,8 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: newFilters
     }));
+    this.getAddedMovies(user.id, session_id, "favorite");
+    this.getAddedMovies(user.id, session_id, "watchlist");
   };
 
   onChangePage = page => {
@@ -98,6 +105,24 @@ export default class App extends React.Component {
     });
   };
 
+  getAddedMovies = (userId, sessionId, type) => {
+    const userMoviesArray = [];
+    CallApi.get(`/account/${userId}/${type}/movies`, {
+      params: {
+        session_id: sessionId,
+        language: "ru-RU"
+      }
+    }).then(data => {
+      const movies = data.results;
+      movies.map(movie => {
+        return userMoviesArray.push(movie.id);
+      });
+      this.setState({
+        [type]: userMoviesArray
+      });
+    });
+  };
+
   componentDidMount() {
     const session_id = cookies.get("session_id");
 
@@ -109,7 +134,17 @@ export default class App extends React.Component {
       }).then(user => {
         this.updateUser(user);
         this.updateSessionId(session_id);
+        this.getAddedMovies(user.id, session_id, "favorite");
+        this.getAddedMovies(user.id, session_id, "watchlist");
       });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { user, session_id } = this.state;
+    if (this.state.user !== prevState.user && user !== null) {
+      this.getAddedMovies(user.id, session_id, "favorite");
+      this.getAddedMovies(user.id, session_id, "watchlist");
     }
   }
 
@@ -120,7 +155,9 @@ export default class App extends React.Component {
       total_pages,
       user,
       showLoginModal,
-      session_id
+      session_id,
+      favorite,
+      watchlist
     } = this.state;
 
     return (
@@ -130,7 +167,10 @@ export default class App extends React.Component {
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
           session_id: session_id,
-          resetUserInfo: this.resetUserInfo
+          resetUserInfo: this.resetUserInfo,
+          favorite: favorite,
+          watchlist: watchlist,
+          getAddedMovies: this.getAddedMovies
         }}
       >
         <div>

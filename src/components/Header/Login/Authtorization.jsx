@@ -3,7 +3,7 @@ import Field from "./Field";
 import CallApi from "../../../api/api";
 import AppContextHOC from "../../HOC/AppContextHOC";
 
-class Auth extends React.Component {
+class Authorization extends React.Component {
   constructor() {
     super();
 
@@ -46,12 +46,11 @@ class Auth extends React.Component {
             session_id: data.session_id
           }
         }).then(user => {
-          console.log(user);
           this.setState({
             submitButton: true
           });
           this.props.updateUser(user);
-          toggleLoginModal();
+          toggleLoginModal();          
         });
       })
       .catch(error => {
@@ -180,4 +179,4 @@ class Auth extends React.Component {
   }
 }
 
-export default AppContextHOC(Auth);
+export default AppContextHOC(Authorization);

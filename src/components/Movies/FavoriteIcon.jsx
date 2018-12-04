@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ActionIconsHOC from "./ActionIconsHOC";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 class FavoriteIcon extends React.Component {
   render() {
@@ -16,4 +17,4 @@ class FavoriteIcon extends React.Component {
   }
 }
 
-export default ActionIconsHOC(FavoriteIcon, "favorite");
+export default AppContextHOC(ActionIconsHOC(FavoriteIcon, "favorite"));

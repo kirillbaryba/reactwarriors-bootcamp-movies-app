@@ -2,6 +2,7 @@ import React from "react";
 import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
 import MoviesHOC from "./MoviesHOC";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 const MoviesList = ({
   movies,
@@ -36,4 +37,4 @@ MoviesList.propTypes = {
   user: PropTypes.object
 };
 
-export default MoviesHOC(MoviesList);
+export default AppContextHOC(MoviesHOC(MoviesList));
