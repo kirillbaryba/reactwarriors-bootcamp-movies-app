@@ -48,9 +48,9 @@ const ActionIconsHOC = (Component, type) =>
 
     componentDidUpdate(prevProps, prevState) {
       if (prevProps[type] !== this.props[type]) {
-        const a = this.props[type].includes(this.props.item.id);
+        const result = this.props[type].includes(this.props.item.id);
         this.setState({
-          isAdd: a
+          isAdd: result
         });
       }
     }

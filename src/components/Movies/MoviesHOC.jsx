@@ -1,6 +1,7 @@
 import React from "react";
 import Loader from "react-loader-spinner";
 import CallApi from "../../api/api";
+import _ from "lodash";
 
 export default Component =>
   class MoviesHOC extends React.Component {
@@ -46,27 +47,26 @@ export default Component =>
       this.getMovies(this.props.filters, this.props.page);
     }
 
+    // lodash isEqual
     componentDidUpdate(prevProps) {
-      if (this.props.filters !== prevProps.filters) {
+      const { user, session_id } = this.props;
+      if (!_.isEqual(this.props.filters, prevProps.filters)) {
         this.props.onChangePage(1, this.state.total_pages);
         this.getMovies(this.props.filters, 1);
+        this.props.getAddedMovies(user.id, session_id, "favorite");
+        this.props.getAddedMovies(user.id, session_id, "watchlist");
       }
 
-      if (this.props.page !== prevProps.page) {
+      if (!_.isEqual(this.props.page, prevProps.page)) {
         this.getMovies(this.props.filters, this.props.page);
+        this.props.getAddedMovies(user.id, session_id, "favorite");
+        this.props.getAddedMovies(user.id, session_id, "watchlist");
       }
     }
 
     render() {
       const { movies, isLoading } = this.state;
-      const {
-        user,
-        showModal,
-        toggleLoginModal,
-        session_id,
-        userFavoriteMovies,
-        userWatchListMovies
-      } = this.props;
+      const { user, showModal, toggleLoginModal, session_id } = this.props;
 
       if (isLoading) {
         return (
@@ -83,8 +83,6 @@ export default Component =>
           session_id={session_id}
           showModal={showModal}
           toggleLoginModal={toggleLoginModal}
-          userFavoriteMovies={userFavoriteMovies}
-          userWatchListMovies={userWatchListMovies}
         />
       );
     }

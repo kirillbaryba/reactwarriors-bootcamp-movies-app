@@ -2,7 +2,7 @@ import React from "react";
 import CallApi from "../../api/api";
 
 export default Component =>
-  class GenresHOC extends React.Component {
+  class GenresHOC extends React.PureComponent {
     constructor() {
       super();
 

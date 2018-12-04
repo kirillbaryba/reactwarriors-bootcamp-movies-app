@@ -69,6 +69,7 @@ export default class App extends React.Component {
   };
 
   onChangeFilters = e => {
+    const { user, session_id } = this.state;
     const newFilters = {
       ...this.state.filters,
       [e.target.name]: e.target.value
@@ -76,6 +77,8 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: newFilters
     }));
+    this.getAddedMovies(user.id, session_id, "favorite");
+    this.getAddedMovies(user.id, session_id, "watchlist");
   };
 
   onChangePage = page => {
