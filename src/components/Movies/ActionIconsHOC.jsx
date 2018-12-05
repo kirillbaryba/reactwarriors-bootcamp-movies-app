@@ -1,5 +1,6 @@
 import React from "react";
 import CallApi from "../../api/api";
+import _ from "lodash";
 
 const ActionIconsHOC = (Component, type) =>
   class ActionIconsHOC extends React.Component {
@@ -47,7 +48,7 @@ const ActionIconsHOC = (Component, type) =>
     };
 
     componentDidUpdate(prevProps, prevState) {
-      if (prevProps[type] !== this.props[type]) {
+      if (!_.isEqual(prevProps[type], this.props[type])) {
         const result = this.props[type].includes(this.props.item.id);
         this.setState({
           isAdd: result

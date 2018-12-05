@@ -2,6 +2,7 @@ import React from "react";
 import Login from "./Login/Login";
 import User from "./User";
 import PropTypes from "prop-types";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class Header extends React.Component {
   render() {
@@ -11,9 +12,7 @@ class Header extends React.Component {
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
           <ul className="navbar-nav">
-            <li className="nav-item active">
-              <a className="nav-link">Home</a>
-            </li>
+            <Link to="/">Home</Link>
           </ul>
           {user ? (
             <User user={user} />

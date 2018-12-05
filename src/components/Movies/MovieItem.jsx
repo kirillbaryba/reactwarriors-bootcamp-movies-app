@@ -1,6 +1,7 @@
 import React from "react";
 import FavoriteIcon from "./FavoriteIcon";
 import WatchlistIcon from "./WatchlistIcon";
+import { Link } from "react-router-dom";
 
 export default class MovieItem extends React.Component {
   constructor() {
@@ -25,7 +26,9 @@ export default class MovieItem extends React.Component {
           alt={item.name}
         />
         <div className="card-body">
-          <h6 className="card-title">{item.title}</h6>
+          <Link to={`/movie/${item.id}`} className="card-title">
+            {item.title}
+          </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="buttons-wrap">
             <FavoriteIcon
