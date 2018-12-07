@@ -10,7 +10,7 @@ export default class MovieItem extends React.Component {
     this.state = {
       favorite: false,
       watchlist: false,
-      message: {}
+      message: {} 
     };
   }
 
@@ -26,7 +26,7 @@ export default class MovieItem extends React.Component {
           alt={item.name}
         />
         <div className="card-body">
-          <Link to={`/movie/${item.id}`} className="card-title">
+          <Link to={`/movie/${item.id}/details`} className="card-title">
             {item.title}
           </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>

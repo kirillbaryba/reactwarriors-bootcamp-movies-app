@@ -1,16 +1,17 @@
 import React from "react";
 import CallApi from "../../api/api";
-import _ from "lodash";
 
 const ActionIconsHOC = (Component, type) =>
   class ActionIconsHOC extends React.Component {
-    displayName: "ActionIconsHOC";
+    static defaultProps = {
+      [type]: []
+    };
 
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       this.state = {
-        isAdd: false
+        isAdd: this.props[type].includes(this.props.item.id)
       };
     }
 
@@ -38,8 +39,9 @@ const ActionIconsHOC = (Component, type) =>
                 media_id: item.id,
                 [type]: this.state.isAdd
               }
+            }).then(() => {
+               getAddedMovies(user.id, session_id, type);
             });
-            getAddedMovies(user.id, session_id, type);
           }
         );
       } else {
@@ -48,10 +50,12 @@ const ActionIconsHOC = (Component, type) =>
     };
 
     componentDidUpdate(prevProps, prevState) {
-      if (!_.isEqual(prevProps[type], this.props[type])) {
-        const result = this.props[type].includes(this.props.item.id);
+      if (
+        prevProps[type].includes(this.props.item.id) !==
+        this.props[type].includes(this.props.item.id)
+      ) {
         this.setState({
-          isAdd: result
+          isAdd: this.props[type].includes(this.props.item.id)
         });
       }
     }

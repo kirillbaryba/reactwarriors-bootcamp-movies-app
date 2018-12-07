@@ -1,7 +1,6 @@
 import React from "react";
 import Filters from "../../Filters/Filters";
 import MoviesList from "../../Movies/MoviesList";
-import CallApi from "../../../api/api";
 import AppContextHOC from "../../HOC/AppContextHOC";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -35,8 +34,8 @@ class MoviesPage extends React.Component {
       filters: newFilters
     }));
     if (user) {
-      this.getAddedMovies(user.id, session_id, "favorite");
-      this.getAddedMovies(user.id, session_id, "watchlist");
+      this.props.getAddedMovies(user.id, session_id, "favorite");
+      this.props.getAddedMovies(user.id, session_id, "watchlist");
     }
   };
 

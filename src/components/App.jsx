@@ -5,7 +5,7 @@ import MoviesPage from "../components/pages/MoviesPage/MoviesPage";
 import MoviePage from "../components/pages/MoviePage/MoviePage";
 import LoginModal from "../components/Header/LoginModal";
 import CallApi from "../api/api";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -61,6 +61,7 @@ export default class App extends React.Component {
       favorite: [],
       watchlist: []
     });
+    cookies.remove('session_id', {path: "/"});
   };
 
   getAddedMovies = (userId, sessionId, type) => {
@@ -90,10 +91,8 @@ export default class App extends React.Component {
           session_id: session_id
         }
       }).then(user => {
-        this.updateUser(user);
         this.updateSessionId(session_id);
-        this.getAddedMovies(user.id, session_id, "favorite");
-        this.getAddedMovies(user.id, session_id, "watchlist");
+        this.updateUser(user);
       });
     }
   }
