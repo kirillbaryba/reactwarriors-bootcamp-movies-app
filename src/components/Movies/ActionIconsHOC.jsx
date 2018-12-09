@@ -7,11 +7,13 @@ const ActionIconsHOC = (Component, type) =>
       super(props);
 
       this.state = {
-        isAdd: this.props[type].find(m => m.id === this.props.item.id)
-          ? true
-          : false
+        isAdd: this.findIncludedMovie(this.props[type], this.props.item.id)
       };
     }
+
+    findIncludedMovie = (moviesArray, movieId) => {
+      return moviesArray.find(item => item.id === movieId);
+    };
 
     addMovieAction = () => {
       const {
@@ -49,13 +51,11 @@ const ActionIconsHOC = (Component, type) =>
 
     componentDidUpdate(prevProps, prevState) {
       if (
-        prevProps[type].find(m => m.id === this.props.item.id) !==
-        this.props[type].find(m => m.id === this.props.item.id)
+        this.findIncludedMovie(prevProps[type], this.props.item.id) !==
+        this.findIncludedMovie(this.props[type], this.props.item.id)
       ) {
         this.setState({
-          isAdd: this.props[type].find(m => m.id === this.props.item.id)
-            ? true
-            : false
+          isAdd: this.findIncludedMovie(this.props[type], this.props.item.id)
         });
       }
     }
