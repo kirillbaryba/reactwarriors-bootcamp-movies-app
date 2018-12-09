@@ -1,15 +1,14 @@
 import React from "react";
 import CallApi from "../../../api/api";
-import { Route, Link, Switch } from "react-router-dom";
 import FavoriteIcon from "../../Movies/FavoriteIcon";
 import WatchlistIcon from "../../Movies/WatchlistIcon";
 import AppContextHOC from "../../HOC/AppContextHOC";
-import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
-import classnames from "classnames";
 import Details from "./Details";
 import Videos from "./Videos";
 import Credits from "./Credits";
 import Loader from "react-loader-spinner";
+import MoviePageTabs from "../../Movies/MoviePageTabs";
+import { Route, Switch } from "react-router-dom";
 
 class MoviePage extends React.Component {
   constructor() {
@@ -17,17 +16,8 @@ class MoviePage extends React.Component {
 
     this.state = {
       movie: "",
-      activeTab: "1",
       isLoading: false
     };
-  }
-
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
   }
 
   componentDidMount() {
@@ -51,7 +41,7 @@ class MoviePage extends React.Component {
   render() {
     const { movie, isLoading } = this.state;
     const { user, session_id, toggleLoginModal } = this.props;
-    console.log(movie);
+
     if (isLoading) {
       return (
         <span className="spinner">
@@ -80,78 +70,28 @@ class MoviePage extends React.Component {
               <h2>{movie.original_title}</h2>
               <span>({String(movie.release_date).substring(0, 4)})</span>
               <h3>Описание</h3>
-              <span>{movie.overview ? movie.overview : "Нет описания"}</span>
+              <div>{movie.overview ? movie.overview : "Нет описания"}</div>
+              <FavoriteIcon
+                item={movie}
+                user={user}
+                session_id={session_id}
+                toggleLoginModal={toggleLoginModal}
+              />
+              <WatchlistIcon
+                item={movie}
+                user={user}
+                session_id={session_id}
+                toggleLoginModal={toggleLoginModal}
+              />
             </div>
-            <FavoriteIcon
-              item={movie}
-              user={user}
-              session_id={session_id}
-              toggleLoginModal={toggleLoginModal}
-            />
-            <WatchlistIcon
-              item={movie}
-              user={user}
-              session_id={session_id}
-              toggleLoginModal={toggleLoginModal}
-            />
           </div>
         </div>
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              tag="span"
-              className={classnames({ active: this.state.activeTab === "1" })}
-            >
-              <Link
-                onClick={() => {
-                  this.toggle("1");
-                }}
-                to={`/movie/${this.state.movie.id}/details`}
-              >
-                Details
-              </Link>
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              tag="span"
-              className={classnames({ active: this.state.activeTab === "2" })}
-            >
-              <Link
-                to={`/movie/${this.state.movie.id}/videos`}
-                onClick={() => {
-                  this.toggle("2");
-                }}
-              >
-                Videos
-              </Link>
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              tag="span"
-              className={classnames({ active: this.state.activeTab === "3" })}
-            >
-              <Link
-                to={`/movie/${this.state.movie.id}/credits`}
-                onClick={() => {
-                  this.toggle("3");
-                }}
-              >
-                Credits
-              </Link>
-            </NavLink>
-          </NavItem>
-        </Nav>
-        <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId={this.state.activeTab}>
-            <Switch>
-              <Route path="/movie/:id/details" component={Details} />
-              <Route path="/movie/:id/videos" component={Videos} />
-              <Route path="/movie/:id/credits" component={Credits} />
-            </Switch>
-          </TabPane>
-        </TabContent>
+        <MoviePageTabs movie={movie} />
+        <Switch>
+          <Route path="/movie/:id/details" component={Details} />
+          <Route path="/movie/:id/videos" component={Videos} />
+          <Route path="/movie/:id/credits" component={Credits} />
+        </Switch>
       </div>
     );
   }

@@ -61,23 +61,18 @@ export default class App extends React.Component {
       favorite: [],
       watchlist: []
     });
-    cookies.remove('session_id', {path: "/"});
+    cookies.remove("session_id", { path: "/" });
   };
 
   getAddedMovies = (userId, sessionId, type) => {
-    const userMoviesArray = [];
     CallApi.get(`/account/${userId}/${type}/movies`, {
       params: {
         session_id: sessionId,
         language: "ru-RU"
       }
     }).then(data => {
-      const movies = data.results;
-      movies.map(movie => {
-        return userMoviesArray.push(movie.id);
-      });
       this.setState({
-        [type]: userMoviesArray
+        [type]: data.results
       });
     });
   };
