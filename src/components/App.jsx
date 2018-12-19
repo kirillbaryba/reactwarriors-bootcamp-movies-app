@@ -3,6 +3,7 @@ import Header from "./Header/Header";
 import Cookies from "universal-cookie";
 import MoviesPage from "../components/pages/MoviesPage/MoviesPage";
 import MoviePage from "../components/pages/MoviePage/MoviePage";
+import UserFavoriteMovies from "../components/pages/MoviesPage/UserFavoriteMovies";
 import LoginModal from "../components/Header/LoginModal";
 import CallApi from "../api/api";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -128,6 +129,7 @@ export default class App extends React.Component {
             <Header user={user} toggleLoginModal={this.toggleLoginModal} />
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />
+            <Route path="/favorites" component={UserFavoriteMovies} />
           </div>
           <LoginModal
             showLoginModal={showLoginModal}

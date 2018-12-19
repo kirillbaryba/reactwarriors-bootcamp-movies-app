@@ -24,7 +24,7 @@ class Credits extends React.Component {
 
   render() {
     const { credits } = this.state;
-    console.log(credits, "credits");
+    
     return (
       <Container>
         <Row>

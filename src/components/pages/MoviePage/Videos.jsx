@@ -17,18 +17,15 @@ class Videos extends React.Component {
         language: "ru-RU"
       }
     }).then(data => {
-      this.setState({ videos: data.results });
+      this.setState({ videos: data.results});
     });
   }
 
   render() {
     const { videos } = this.state;
-    if (videos.length <= 0) {
-      return <span>No videos</span>;
-    }
-    console.log(videos);
+   
     return (
-      <div>
+      <React.Fragment>
         {videos.map(video => (
           <iframe
             key={video.key}
@@ -40,7 +37,7 @@ class Videos extends React.Component {
             frameBorder="0"
           />
         ))}
-      </div>
+      </React.Fragment>
     );
   }
 }

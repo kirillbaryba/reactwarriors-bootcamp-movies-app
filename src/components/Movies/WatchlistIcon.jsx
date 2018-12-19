@@ -1,19 +1,12 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UIIcon from "../UIComponents/UIIcon";
 import ActionIconsHOC from "./ActionIconsHOC";
 import AppContextHOC from "../HOC/AppContextHOC";
 
 class WatchlistIcon extends React.Component {
   render() {
     const { onClick, isAdd } = this.props;
-    return (
-      <span
-        onClick={onClick}
-        className={`${isAdd ? "red" : null} icon-watchlist`}
-      >
-        <FontAwesomeIcon icon={[isAdd ? "fas" : "far", "bookmark"]} />
-      </span>
-    );
+    return <UIIcon onClick={onClick} isAdd={isAdd} type="bookmark" />;
   }
 }
 

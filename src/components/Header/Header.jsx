@@ -9,12 +9,23 @@ class Header extends React.Component {
     const { user, toggleLoginModal } = this.props;
 
     return (
-      <nav className="navbar navbar-dark bg-primary">
+      <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
         <div className="container">
-          <ul className="navbar-nav">
-            <Link style={{ color: "white" }} to="/">
-              Home
-            </Link>
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <Link style={{ color: "white" }} to="/">
+                Home
+              </Link>
+            </li>
+            {user ? (
+              <li className="nav-item">
+                <Link style={{ color: "white" }} to="/favorites">
+                  Favorites
+                </Link>
+              </li>
+            ) : (
+              false
+            )}
           </ul>
           {user ? (
             <User user={user} />
