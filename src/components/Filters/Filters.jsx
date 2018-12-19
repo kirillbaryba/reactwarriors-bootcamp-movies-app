@@ -3,8 +3,9 @@ import SortBy from "./SortBy";
 import Pagination from "./Pagination";
 import SortByYear from "./SortByYear";
 import Genres from "./Genres";
+import AppContextHOC from "../HOC/AppContextHOC";
 
-export default class Filters extends React.Component {
+class Filters extends React.Component {
   render() {
     const {
       filters: { sort_by, primary_release_year, with_genres },
@@ -36,3 +37,5 @@ export default class Filters extends React.Component {
     );
   }
 }
+
+export default AppContextHOC(Filters);

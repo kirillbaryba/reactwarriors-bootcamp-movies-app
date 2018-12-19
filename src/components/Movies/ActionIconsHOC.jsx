@@ -3,15 +3,17 @@ import CallApi from "../../api/api";
 
 const ActionIconsHOC = (Component, type) =>
   class ActionIconsHOC extends React.Component {
-    displayName: "ActionIconsHOC";
-
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       this.state = {
-        isAdd: false
+        isAdd: this.findIncludedMovie(this.props[type], this.props.item.id)
       };
     }
+
+    findIncludedMovie = (moviesArray, movieId) => {
+      return moviesArray.find(item => item.id === movieId);
+    };
 
     addMovieAction = () => {
       const {
@@ -37,8 +39,9 @@ const ActionIconsHOC = (Component, type) =>
                 media_id: item.id,
                 [type]: this.state.isAdd
               }
+            }).then(() => {
+              getAddedMovies(user.id, session_id, type);
             });
-            getAddedMovies(user.id, session_id, type);
           }
         );
       } else {
@@ -47,10 +50,12 @@ const ActionIconsHOC = (Component, type) =>
     };
 
     componentDidUpdate(prevProps, prevState) {
-      if (prevProps[type] !== this.props[type]) {
-        const result = this.props[type].includes(this.props.item.id);
+      if (
+        this.findIncludedMovie(prevProps[type], this.props.item.id) !==
+        this.findIncludedMovie(this.props[type], this.props.item.id)
+      ) {
         this.setState({
-          isAdd: result
+          isAdd: this.findIncludedMovie(this.props[type], this.props.item.id)
         });
       }
     }

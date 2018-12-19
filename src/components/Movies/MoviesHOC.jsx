@@ -47,7 +47,7 @@ export default Component =>
       this.getMovies(this.props.filters, this.props.page);
     }
 
-    // lodash isEqual
+    
     componentDidUpdate(prevProps) {
       const { user, session_id } = this.props;
       if (!_.isEqual(this.props.filters, prevProps.filters)) {

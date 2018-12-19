@@ -2,18 +2,30 @@ import React from "react";
 import Login from "./Login/Login";
 import User from "./User";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 class Header extends React.Component {
   render() {
     const { user, toggleLoginModal } = this.props;
 
     return (
-      <nav className="navbar navbar-dark bg-primary">
+      <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
         <div className="container">
-          <ul className="navbar-nav">
-            <li className="nav-item active">
-              <a className="nav-link">Home</a>
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <Link style={{ color: "white" }} to="/">
+                Home
+              </Link>
             </li>
+            {user ? (
+              <li className="nav-item">
+                <Link style={{ color: "white" }} to="/favorites">
+                  Favorites
+                </Link>
+              </li>
+            ) : (
+              false
+            )}
           </ul>
           {user ? (
             <User user={user} />
