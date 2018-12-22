@@ -125,12 +125,12 @@ export default class App extends React.Component {
             toggleLoginModal: this.toggleLoginModal
           }}
         >
-          <div>
+          <React.Fragment>
             <Header user={user} toggleLoginModal={this.toggleLoginModal} />
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />
             <Route path="/favorites" component={UserFavoriteMovies} />
-          </div>
+          </React.Fragment>
           <LoginModal
             showLoginModal={showLoginModal}
             toggleLoginModal={this.toggleLoginModal}

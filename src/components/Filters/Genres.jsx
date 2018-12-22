@@ -7,7 +7,7 @@ const Genres = ({ genres, with_genres, resetGenres, onChange }) => (
     <div>
       <button
         type="button"
-        className="btn btn-outline-dark mb-2"
+        className="btn btn-outline-dark mb-2 w-100"
         onClick={resetGenres}
       >
         Показать все жанры

@@ -12,7 +12,7 @@ class Header extends React.Component {
       <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
         <div className="container">
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
+            <li className="nav-item mr-2">
               <Link style={{ color: "white" }} to="/">
                 Home
               </Link>

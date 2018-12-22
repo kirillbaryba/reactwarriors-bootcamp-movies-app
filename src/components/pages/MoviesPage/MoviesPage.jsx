@@ -82,7 +82,7 @@ class MoviesPage extends React.Component {
                 />
                 <button
                   type="button"
-                  className="btn btn-danger"
+                  className="btn btn-danger w-100"
                   onClick={this.clearAllFilters}
                 >
                   Очистить Фильтры

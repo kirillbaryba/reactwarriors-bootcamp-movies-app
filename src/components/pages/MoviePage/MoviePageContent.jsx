@@ -3,9 +3,9 @@ import FavoriteIcon from "../../Movies/FavoriteIcon";
 import WatchlistIcon from "../../Movies/WatchlistIcon";
 
 const MoviePageContent = props => {
-  const { movie, user, session_id, toggleLoginModal,  } = props;
+  const { movie, user, session_id, toggleLoginModal } = props;
   return (
-    <div className="page-wrap">
+    <div className="page-wrap mt-4 mb-4">
       <div className="container">
         <div className="row">
           <div className="col-4">
