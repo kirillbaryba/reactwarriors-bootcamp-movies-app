@@ -2,20 +2,19 @@ import React from "react";
 import Field from "./Field";
 import CallApi from "../../../api/api";
 import AppContextHOC from "../../HOC/AppContextHOC";
+import { inject, observer } from "mobx-react";
 
+@inject(({ userStore }) => ({
+  values: userStore.values,
+  onChangeValue: userStore.onChangeValue,
+  handleBlur: userStore.handleBlur,
+  validateFields: userStore.validateFields
+}))
+@observer
 class Authorization extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      username: "dima.machulsky@gmail.com",
-      password: "password666",
-      repeatPassword: "password666",
-      errors: {},
-      submitButton: false
-    };
-  }
-
+  state = {
+    submitButton: false
+  };
   onSubmit = () => {
     const { toggleLoginModal } = this.props;
     this.setState({
@@ -50,7 +49,7 @@ class Authorization extends React.Component {
             submitButton: true
           });
           this.props.updateUser(user);
-          toggleLoginModal();          
+          toggleLoginModal();
         });
       })
       .catch(error => {
@@ -67,7 +66,7 @@ class Authorization extends React.Component {
   onLogin = e => {
     e.preventDefault();
 
-    const errors = this.validateFields();
+    const errors = this.props.validateFields();
     if (Object.keys(errors).length > 0) {
       this.setState(prevState => ({
         errors: {
@@ -81,51 +80,8 @@ class Authorization extends React.Component {
     }
   };
 
-  onChangeValue = e => {
-    let { name, value } = e.target;
-
-    this.setState(prevState => ({
-      [name]: value,
-      errors: {
-        ...prevState.errors,
-        base: null,
-        [name]: null
-      },
-      submitButton: false
-    }));
-  };
-
-  handleBlur = () => {
-    const errors = this.validateFields();
-    if (Object.keys(errors).length > 0) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          ...errors
-        }
-      }));
-    }
-  };
-
-  validateFields = () => {
-    const errors = {};
-
-    if (this.state.username === "") {
-      errors.username = "Username can`t be empty";
-    }
-
-    if (this.state.password === "") {
-      errors.password = "Password can`t be empty";
-    }
-
-    if (this.state.repeatPassword !== this.state.password) {
-      errors.repeatPassword = "Passords must be equal";
-    }
-
-    return errors;
-  };
-
   render() {
+    const { values, handleBlur, onChangeValue } = this.props;
     return (
       <form className="form card-body">
         <Field
@@ -134,10 +90,10 @@ class Authorization extends React.Component {
           type="text"
           placeholder="Enter username"
           name="username"
-          value={this.state.username}
-          onChange={this.onChangeValue}
-          error={this.state.errors.username}
-          onBlur={this.handleBlur}
+          value={values.username}
+          onChange={onChangeValue}
+          error={values.errors.username}
+          onBlur={handleBlur}
         />
         <Field
           id="password"
@@ -145,10 +101,10 @@ class Authorization extends React.Component {
           type="password"
           placeholder="Enter password"
           name="password"
-          value={this.state.password}
-          onChange={this.onChangeValue}
-          error={this.state.errors.password}
-          onBlur={this.handleBlur}
+          value={values.password}
+          onChange={onChangeValue}
+          error={values.errors.password}
+          onBlur={handleBlur}
         />
         <Field
           id="repeat-password"
@@ -156,22 +112,22 @@ class Authorization extends React.Component {
           type="password"
           placeholder="Repeat password"
           name="repeatPassword"
-          value={this.state.repeatPassword}
-          onChange={this.onChangeValue}
-          error={this.state.errors.repeatPassword}
-          onBlur={this.handleBlur}
+          value={values.repeatPassword}
+          onChange={onChangeValue}
+          error={values.errors.repeatPassword}
+          onBlur={handleBlur}
         />
         <button
           type="submit"
           className="btn btn-primary w-100"
           onClick={this.onLogin}
-          disabled={this.state.submitButton}
+          disabled={values.submitButton}
         >
           Submit
         </button>
-        {this.state.errors.base ? (
+        {values.errors.base ? (
           <div className="invalid-feedback text-center">
-            {this.state.errors.base}
+            {values.errors.base}
           </div>
         ) : null}
       </form>

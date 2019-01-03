@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Nav, NavItem, NavLink as NavLinkTab } from "reactstrap";
+import { Nav, NavItem } from "reactstrap";
 
 const MoviePageTabs = props => {
   const activeTabStyle = {
