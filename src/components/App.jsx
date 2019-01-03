@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "./Header/Header";
-import Cookies from "universal-cookie";
 import MoviesPage from "../components/pages/MoviesPage/MoviesPage";
 import MoviePage from "../components/pages/MoviePage/MoviePage";
 import UserFavoriteMovies from "../components/pages/MoviesPage/UserFavoriteMovies";
@@ -12,58 +11,26 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 
-library.add(fas, far);
+import { inject, observer } from "mobx-react";
 
-const cookies = new Cookies();
+library.add(fas, far);
 
 export const AppContext = React.createContext();
 
-export default class App extends React.Component {
+@inject(({ userStore, loginFormStore }) => ({
+  userStore,
+  loginFormStore
+}))
+@observer
+class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      user: null,
-      session_id: null,
-      page: 1,
-      total_pages: "",
-      showLoginModal: false,
       favorite: [],
       watchlist: []
     };
   }
-
-  toggleLoginModal = () => {
-    this.setState(prevState => ({
-      showLoginModal: !prevState.showLoginModal
-    }));
-  };
-
-  updateUser = user => {
-    this.setState({
-      user
-    });
-  };
-
-  updateSessionId = session_id => {
-    cookies.set("session_id", session_id, {
-      path: "/",
-      maxAge: 2592000
-    });
-    this.setState({
-      session_id
-    });
-  };
-
-  resetUserInfo = () => {
-    this.setState({
-      user: null,
-      session_id: null,
-      favorite: [],
-      watchlist: []
-    });
-    cookies.remove("session_id", { path: "/" });
-  };
 
   getAddedMovies = (userId, sessionId, type) => {
     CallApi.get(`/account/${userId}/${type}/movies`, {
@@ -79,22 +46,11 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    const session_id = cookies.get("session_id");
-
-    if (session_id) {
-      CallApi.get("/account", {
-        params: {
-          session_id: session_id
-        }
-      }).then(user => {
-        this.updateSessionId(session_id);
-        this.updateUser(user);
-      });
-    }
+    this.props.userStore.getUser();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { user, session_id } = this.state;
+    const { user, session_id } = this.props.userStore;
     if (this.state.user !== prevState.user && user !== null) {
       this.getAddedMovies(user.id, session_id, "favorite");
       this.getAddedMovies(user.id, session_id, "watchlist");
@@ -102,41 +58,31 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {
-      user,
-      showLoginModal,
-      session_id,
-      favorite,
-      watchlist
-    } = this.state;
+    const { favorite, watchlist } = this.state;
 
     return (
       <Router>
         <AppContext.Provider
           value={{
-            user: user,
-            updateUser: this.updateUser,
-            updateSessionId: this.updateSessionId,
-            session_id: session_id,
-            resetUserInfo: this.resetUserInfo,
             favorite: favorite,
             watchlist: watchlist,
-            getAddedMovies: this.getAddedMovies,
-            toggleLoginModal: this.toggleLoginModal
+            getAddedMovies: this.getAddedMovies
           }}
         >
           <React.Fragment>
-            <Header user={user} toggleLoginModal={this.toggleLoginModal} />
+            <Header />
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />
             <Route path="/favorites" component={UserFavoriteMovies} />
           </React.Fragment>
           <LoginModal
-            showLoginModal={showLoginModal}
-            toggleLoginModal={this.toggleLoginModal}
+            showLoginModal={this.props.loginFormStore.showLoginModal}
+            toggleLoginModal={this.props.loginFormStore.toggleLoginModal}
           />
         </AppContext.Provider>
       </Router>
     );
   }
 }
+
+export default App;

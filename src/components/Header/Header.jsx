@@ -1,13 +1,19 @@
 import React from "react";
 import Login from "./Login/Login";
 import User from "./User";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { inject, observer } from "mobx-react";
 
+@inject(({ userStore, loginFormStore }) => ({
+  userStore,
+  loginFormStore
+}))
+@observer
 class Header extends React.Component {
   render() {
-    const { user, toggleLoginModal } = this.props;
-
+    const { user } = this.props;
+    console.log(this.props.userStore);
+    const { toggleLoginModal } = this.props.loginFormStore;
     return (
       <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
         <div className="container">
@@ -37,14 +43,5 @@ class Header extends React.Component {
     );
   }
 }
-
-Header.defaultProps = {
-  user: null
-};
-
-Header.propTypes = {
-  user: PropTypes.object,
-  toggleLoginModal: PropTypes.func.isRequired
-};
 
 export default Header;

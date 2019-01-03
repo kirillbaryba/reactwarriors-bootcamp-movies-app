@@ -1,87 +1,34 @@
 import React from "react";
 import Field from "./Field";
-import CallApi from "../../../api/api";
 import AppContextHOC from "../../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
 
-@inject(({ userStore }) => ({
-  values: userStore.values,
-  onChangeValue: userStore.onChangeValue,
-  handleBlur: userStore.handleBlur,
-  validateFields: userStore.validateFields
+@inject(({ loginFormStore }) => ({
+  loginFormStore
 }))
 @observer
 class Authorization extends React.Component {
-  state = {
-    submitButton: false
-  };
-  onSubmit = () => {
-    const { toggleLoginModal } = this.props;
-    this.setState({
-      submitButton: true
-    });
+  onLogin = event => {
+    event.preventDefault();
 
-    CallApi.get("/authentication/token/new")
-      .then(data => {
-        return CallApi.post("/authentication/token/validate_with_login", {
-          body: {
-            username: this.state.username,
-            password: this.state.password,
-            request_token: data.request_token
-          }
-        }).then(data => {
-          return CallApi.post("/authentication/session/new", {
-            body: {
-              request_token: data.request_token
-            }
-          });
-        });
-      })
-      .then(data => {
-        this.props.updateSessionId(data.session_id);
-
-        return CallApi.get("/account", {
-          params: {
-            session_id: data.session_id
-          }
-        }).then(user => {
-          this.setState({
-            submitButton: true
-          });
-          this.props.updateUser(user);
-          toggleLoginModal();
-        });
-      })
-      .catch(error => {
-        console.log(error, "error");
-        this.setState({
-          submitButton: true,
-          errors: {
-            base: error.status_message
-          }
-        });
-      });
-  };
-
-  onLogin = e => {
-    e.preventDefault();
-
-    const errors = this.props.validateFields();
+    const errors = this.props.loginFormStore.validateFields();
     if (Object.keys(errors).length > 0) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          ...errors
-        },
-        submitButton: true
-      }));
+      this.props.loginFormStore.updateErrors(errors);
     } else {
-      this.onSubmit();
+      this.props.loginFormStore.onSubmit();
     }
   };
 
   render() {
-    const { values, handleBlur, onChangeValue } = this.props;
+    const {
+      username,
+      handleBlur,
+      onChangeValue,
+      errors,
+      password,
+      repeatPassword,
+      submitButton
+    } = this.props.loginFormStore;
     return (
       <form className="form card-body">
         <Field
@@ -90,9 +37,9 @@ class Authorization extends React.Component {
           type="text"
           placeholder="Enter username"
           name="username"
-          value={values.username}
+          value={username}
           onChange={onChangeValue}
-          error={values.errors.username}
+          error={errors.username}
           onBlur={handleBlur}
         />
         <Field
@@ -101,9 +48,9 @@ class Authorization extends React.Component {
           type="password"
           placeholder="Enter password"
           name="password"
-          value={values.password}
+          value={password}
           onChange={onChangeValue}
-          error={values.errors.password}
+          error={errors.password}
           onBlur={handleBlur}
         />
         <Field
@@ -112,22 +59,22 @@ class Authorization extends React.Component {
           type="password"
           placeholder="Repeat password"
           name="repeatPassword"
-          value={values.repeatPassword}
+          value={repeatPassword}
           onChange={onChangeValue}
-          error={values.errors.repeatPassword}
+          error={errors.repeatPassword}
           onBlur={handleBlur}
         />
         <button
           type="submit"
           className="btn btn-primary w-100"
           onClick={this.onLogin}
-          disabled={values.submitButton}
+          disabled={submitButton}
         >
           Submit
         </button>
-        {values.errors.base ? (
+        {this.props.loginFormStore.errors.base ? (
           <div className="invalid-feedback text-center">
-            {values.errors.base}
+            {this.props.loginFormStore.errors.base}
           </div>
         ) : null}
       </form>
