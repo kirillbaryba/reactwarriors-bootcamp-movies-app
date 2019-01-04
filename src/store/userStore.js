@@ -1,58 +1,56 @@
-import { observable, action } from "mobx";
+import { observable, action, computed, configure } from "mobx";
+import Cookies from "universal-cookie";
+import CallApi from "../api/api";
 
-export default class userStore {
-  @observable
-  values = {
-    username: "dima.machulsky@gmail.com",
-    password: "password666",
-    repeatPassword: "password666",
-    errors: {},
-    submitButton: false
+const cookies = new Cookies();
+
+configure({ enforceActions: "always" });
+
+class UserStore {
+  @observable user = {};
+
+  @observable session_id = null;
+
+  @computed get isAuth() {
+    return Boolean(Object.keys(this.user).length);
+  }
+
+  @action
+  resetUserInfo = () => {
+    cookies.remove("session_id", { path: "/" });
+    this.user = null;
+    this.session_id = null;
+    CallApi.delete("/authentication/session", {
+      body: {
+        session_id: this.session_id
+      }
+    });
   };
 
   @action
-  onChangeValue = e => {
-    let { name, value } = e.target;
+  updateAuth = ({ session_id, user }) => {
+    cookies.set("session_id", session_id, {
+      path: "/",
+      maxAge: 2592000
+    });
 
-    this.values = {
-      [name]: value,
-      errors: {
-        ...this.errors,
-        base: null,
-        [name]: null
-      },
-      submitButton: false
-    };
+    this.session_id = session_id;
+    this.user = user;
   };
 
   @action
-  handleBlur = e => {
-    const errors = this.validateFields();
-    if (Object.keys(errors).length > 0) {
-      this.values = {
-        errors: {
-          ...errors,
-          [e.target.name]: ""
+  getUser = () => {
+    const session_id = cookies.get("session_id");
+
+    if (session_id) {
+      CallApi.get("/account", {
+        params: {
+          session_id: session_id
         }
-      };
+      }).then(user => {
+        this.updateAuth({ session_id, user });
+      });
     }
-  };
-
-  validateFields = () => {
-    const errors = {};
-
-    if (this.values.username === "") {
-      errors.username = "Username can`t be empty";
-    }
-
-    if (this.values.password === "") {
-      errors.password = "Password can`t be empty";
-    }
-
-    if (this.values.repeatPassword !== this.values.password) {
-      errors.repeatPassword = "Passords must be equal";
-    }
-
-    return errors;
   };
 }
+export const userStore = new UserStore();

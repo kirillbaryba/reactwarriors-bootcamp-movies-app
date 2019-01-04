@@ -30,12 +30,12 @@ class User extends React.Component {
       body: {
         session_id: this.props.session_id
       }
-    })
-      .then(data => console.log(data));
+    }).then(data => console.log(data));
     resetUserInfo();
   };
 
   render() {
+    console.log(this.props);
     const { user } = this.props;
 
     return (
