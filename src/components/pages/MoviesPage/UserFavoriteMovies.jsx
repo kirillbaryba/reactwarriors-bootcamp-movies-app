@@ -13,7 +13,7 @@ class UserFavoriteMovies extends React.Component {
       <div className="container">
         <div className="row">
           {favorite.map(item => (
-            <div className="col-4">
+            <div key={item.id} className="col-md-4">
               <MovieItem item={item} />
             </div>
           ))}

@@ -1,17 +1,12 @@
 import React from "react";
+import { inject, observer } from "mobx-react";
 
-export default class Pagination extends React.PureComponent {
-  
-  nextPage = () => {
-    this.props.onChangePage(this.props.page + 1);
-  };
-
-  prevPage = () => {
-    this.props.onChangePage(this.props.page - 1);
-  };
-
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class Pagination extends React.Component {
   render() {
-    console.log("pagination");
     return (
       <React.Fragment>
         <div
@@ -22,24 +17,30 @@ export default class Pagination extends React.PureComponent {
           <button
             type="button"
             className="btn btn-light"
-            disabled={this.props.page === 1}
-            onClick={this.prevPage}
+            disabled={this.props.moviesPageStore.page === 1}
+            onClick={this.props.moviesPageStore.prevPage}
           >
             Назад
           </button>
           <button
             type="button"
             className="btn btn-light"
-            disabled={this.props.page === this.props.total_pages}
-            onClick={this.nextPage}
+            disabled={
+              this.props.moviesPageStore.page ===
+              this.props.moviesPageStore.total_pages
+            }
+            onClick={this.props.moviesPageStore.nextPage}
           >
             Вперед
           </button>
         </div>
         <div className="text-center">
-          Страница {this.props.page} из {this.props.total_pages}
+          Страница {this.props.moviesPageStore.page} из{" "}
+          {this.props.moviesPageStore.total_pages}
         </div>
       </React.Fragment>
     );
   }
 }
+
+export default Pagination;

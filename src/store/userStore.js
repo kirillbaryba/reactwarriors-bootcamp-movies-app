@@ -18,7 +18,7 @@ class UserStore {
   @action
   resetUserInfo = () => {
     cookies.remove("session_id", { path: "/" });
-    this.user = null;
+    this.user = {};
     this.session_id = null;
     CallApi.delete("/authentication/session", {
       body: {

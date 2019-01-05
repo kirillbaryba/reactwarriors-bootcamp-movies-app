@@ -2,69 +2,35 @@ import React from "react";
 import Filters from "../../Filters/Filters";
 import MoviesList from "../../Movies/MoviesList";
 import AppContextHOC from "../../HOC/AppContextHOC";
+import { inject, observer } from "mobx-react";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import { far } from "@fortawesome/free-regular-svg-icons";
-
-library.add(fas, far);
-
+@inject(({ moviesPageStore, userStore, loginFormStore }) => ({
+  moviesPageStore,
+  userStore,
+  loginFormStore
+}))
+@observer
 class MoviesPage extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: "2018",
-        with_genres: []
-      },
-      page: 1,
-      total_pages: ""
-    };
-  }
-
-  onChangeFilters = e => {
-    const { user, session_id } = this.props;
-    const newFilters = {
-      ...this.state.filters,
-      [e.target.name]: e.target.value
-    };
-    this.setState(prevState => ({
-      filters: newFilters
-    }));
-    if (user) {
-      this.props.getAddedMovies(user.id, session_id, "favorite");
-      this.props.getAddedMovies(user.id, session_id, "watchlist");
-    }
-  };
-
-  onChangePage = page => {
-    this.setState({
-      page
-    });
-  };
-
-  getTotalPages = total_pages => {
-    this.setState({
-      total_pages
-    });
-  };
-
-  clearAllFilters = () => {
-    this.setState({
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: "2018",
-        with_genres: []
-      },
-      page: 1,
-      total_pages: ""
-    });
-  };
-
   render() {
-    const { filters, page, total_pages } = this.state;
+    // const {
+    //   moviesPageStore: {
+    //     filters,
+    //     page,
+    //     total_pages,
+    //     clearAllFilters,
+    //     onChangePage,
+    //     onChangeFilters,
+    //     getTotalPages
+    //   }
+    // } = this.props.moviesPageStore;
+
+    // const {
+    //   userStore: { user, session_id }
+    // } = this.props.userStore;
+
+    // const {
+    //   loginFormStore: { toggleLoginModal, showLoginModal }
+    // } = this.props.loginFormStore;
 
     return (
       <div className="container">
@@ -74,16 +40,16 @@ class MoviesPage extends React.Component {
               <div className="card-body">
                 <h3>Фильтры:</h3>
                 <Filters
-                  filters={filters}
-                  onChangeFilters={this.onChangeFilters}
-                  page={page}
-                  total_pages={total_pages}
-                  onChangePage={this.onChangePage}
+                  filters={this.props.moviesPageStore.filters}
+                  onChangeFilters={this.props.moviesPageStore.onChangeFilters}
+                  page={this.props.moviesPageStore.page}
+                  total_pages={this.props.moviesPageStore.total_pages}
+                  onChangePage={this.props.moviesPageStore.onChangePage}
                 />
                 <button
                   type="button"
                   className="btn btn-danger w-100"
-                  onClick={this.clearAllFilters}
+                  onClick={this.props.moviesPageStore.clearAllFilters}
                 >
                   Очистить Фильтры
                 </button>
@@ -94,15 +60,15 @@ class MoviesPage extends React.Component {
           <div className="col-8">
             {
               <MoviesList
-                filters={filters}
-                page={page}
-                onChangePage={this.onChangePage}
-                onChangeFilters={this.onChangeFilters}
-                getTotalPages={this.getTotalPages}
-                user={this.props.user}
-                toggleLoginModal={this.toggleLoginModal}
-                showLoginModal={this.props.showLoginModal}
-                session_id={this.props.session_id}
+                filters={this.props.moviesPageStore.filters}
+                page={this.props.moviesPageStore.page}
+                onChangePage={this.props.moviesPageStore.onChangePage}
+                onChangeFilters={this.props.moviesPageStore.onChangeFilters}
+                getTotalPages={this.props.moviesPageStore.getTotalPages}
+                user={this.props.userStore.user}
+                toggleLoginModal={this.props.loginFormStore.toggleLoginModal}
+                showLoginModal={this.props.loginFormStore.showLoginModal}
+                session_id={this.props.userStore.session_id}
               />
             }
           </div>

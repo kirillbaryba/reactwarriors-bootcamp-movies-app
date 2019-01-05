@@ -1,8 +1,13 @@
 import React from "react";
+import { inject, observer } from "mobx-react";
 
-export default class Login extends React.Component {
+@inject(({ loginFormStore }) => ({
+  loginFormStore
+}))
+@observer
+class Login extends React.Component {
   render() {
-    const { toggleLoginModal } = this.props;
+    const { toggleLoginModal } = this.props.loginFormStore;
 
     return (
       <div>
@@ -17,3 +22,5 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default Login;

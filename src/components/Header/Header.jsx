@@ -11,9 +11,6 @@ import { inject, observer } from "mobx-react";
 @observer
 class Header extends React.Component {
   render() {
-    const { user } = this.props;
-    console.log(this.props.userStore);
-    const { toggleLoginModal } = this.props.loginFormStore;
     return (
       <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
         <div className="container">
@@ -23,7 +20,7 @@ class Header extends React.Component {
                 Home
               </Link>
             </li>
-            {user ? (
+            {this.props.userStore.isAuth ? (
               <li className="nav-item">
                 <Link style={{ color: "white" }} to="/favorites">
                   Favorites
@@ -33,11 +30,7 @@ class Header extends React.Component {
               false
             )}
           </ul>
-          {user ? (
-            <User user={user} />
-          ) : (
-            <Login toggleLoginModal={toggleLoginModal} />
-          )}
+          {this.props.userStore.isAuth ? <User /> : <Login />}
         </div>
       </nav>
     );

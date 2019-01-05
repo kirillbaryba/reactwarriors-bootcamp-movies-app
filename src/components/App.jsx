@@ -6,12 +6,11 @@ import UserFavoriteMovies from "../components/pages/MoviesPage/UserFavoriteMovie
 import LoginModal from "../components/Header/LoginModal";
 import CallApi from "../api/api";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { inject, observer } from "mobx-react";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
-
-import { inject, observer } from "mobx-react";
 
 library.add(fas, far);
 
@@ -23,14 +22,10 @@ export const AppContext = React.createContext();
 }))
 @observer
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      favorite: [],
-      watchlist: []
-    };
-  }
+  state = {
+    favorite: [],
+    watchlist: []
+  };
 
   getAddedMovies = (userId, sessionId, type) => {
     CallApi.get(`/account/${userId}/${type}/movies`, {

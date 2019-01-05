@@ -30,7 +30,6 @@ export default class SortBy extends React.PureComponent {
 
   render() {
     const { sort_by, onChangeFilters, options } = this.props;
-    console.log("sort by");
     return (
       <UISelect
         id="sort_by"

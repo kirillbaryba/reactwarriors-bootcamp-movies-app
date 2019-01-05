@@ -8,7 +8,7 @@ const MoviePageContent = props => {
     <div className="page-wrap mt-4 mb-4">
       <div className="container">
         <div className="row">
-          <div className="col-4">
+          <div className="col-md-4">
             <div className="img-wrap">
               {movie.poster_path ? (
                 <img
@@ -20,7 +20,7 @@ const MoviePageContent = props => {
               ) : null}
             </div>
           </div>
-          <div className="col-8">
+          <div className="col-md-8">
             <h2>{movie.original_title}</h2>
             <span>({String(movie.release_date).substring(0, 4)})</span>
             <h3>Описание</h3>

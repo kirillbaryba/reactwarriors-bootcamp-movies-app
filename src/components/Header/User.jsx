@@ -5,17 +5,17 @@ import {
   DropdownItem,
   UncontrolledDropdown
 } from "reactstrap";
-import CallApi from "../../api/api";
 import AppContextHOC from "../HOC/AppContextHOC";
+import { inject, observer } from "mobx-react";
 
+@inject(({ userStore }) => ({
+  userStore
+}))
+@observer
 class User extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      logoutDropdown: false
-    };
-  }
+  state = {
+    logoutDropdown: false
+  };
 
   logoutDropdownToggle = () => {
     this.setState({
@@ -24,20 +24,10 @@ class User extends React.Component {
   };
 
   logout = () => {
-    const { resetUserInfo } = this.props;
-
-    CallApi.delete("/authentication/session", {
-      body: {
-        session_id: this.props.session_id
-      }
-    }).then(data => console.log(data));
-    resetUserInfo();
+    this.props.userStore.resetUserInfo();
   };
 
   render() {
-    console.log(this.props);
-    const { user } = this.props;
-
     return (
       <React.Fragment>
         <UncontrolledDropdown>
@@ -45,7 +35,7 @@ class User extends React.Component {
             <img
               className="rounded-circle"
               src={`https://www.gravatar.com/avatar/${
-                user.avatar.gravatar.hash
+                this.props.userStore.user.avatar.gravatar.hash
               }.jpg?s=40`}
               alt="avatar"
               onClick={this.logoutDropdownToggle}
