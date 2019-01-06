@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import UISelect from "../UIComponents/UISelect";
 import { inject, observer } from "mobx-react";
 
@@ -8,10 +7,6 @@ import { inject, observer } from "mobx-react";
 }))
 @observer
 class SortBy extends React.Component {
-  // static propTypes = {
-  //   onChangeFilters: PropTypes.func.isRequired,
-  //   sort_by: PropTypes.string.isRequired
-  // };
   static defaultProps = {
     options: [
       {

@@ -1,6 +1,5 @@
 import React from "react";
 import MovieItem from "./MovieItem";
-import PropTypes from "prop-types";
 import Loader from "react-loader-spinner";
 import { inject, observer } from "mobx-react";
 

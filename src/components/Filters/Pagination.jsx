@@ -7,6 +7,9 @@ import { inject, observer } from "mobx-react";
 @observer
 class Pagination extends React.Component {
   render() {
+    const {
+      moviesPageStore: { page, prevPage, total_pages, nextPage }
+    } = this.props;
     return (
       <React.Fragment>
         <div
@@ -17,26 +20,22 @@ class Pagination extends React.Component {
           <button
             type="button"
             className="btn btn-light"
-            disabled={this.props.moviesPageStore.page === 1}
-            onClick={this.props.moviesPageStore.prevPage}
+            disabled={page === 1}
+            onClick={prevPage}
           >
             Назад
           </button>
           <button
             type="button"
             className="btn btn-light"
-            disabled={
-              this.props.moviesPageStore.page ===
-              this.props.moviesPageStore.total_pages
-            }
-            onClick={this.props.moviesPageStore.nextPage}
+            disabled={page === total_pages}
+            onClick={nextPage}
           >
             Вперед
           </button>
         </div>
         <div className="text-center">
-          Страница {this.props.moviesPageStore.page} из{" "}
-          {this.props.moviesPageStore.total_pages}
+          Страница {page} из {total_pages}
         </div>
       </React.Fragment>
     );

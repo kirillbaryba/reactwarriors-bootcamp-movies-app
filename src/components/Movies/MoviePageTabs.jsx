@@ -7,7 +7,8 @@ const MoviePageTabs = props => {
     fontWeight: "bold",
     color: "salmon",
     border: "1px solid",
-    borderBottom: "none"
+    borderBottom: "none",
+    borderRadius: "4px 4px 0 0"
   };
   const linkStyle = {
     display: "block",

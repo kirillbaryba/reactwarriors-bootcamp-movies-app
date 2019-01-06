@@ -1,6 +1,5 @@
 import React from "react";
 import Field from "./Field";
-import AppContextHOC from "../../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
 
 @inject(({ loginFormStore }) => ({
@@ -11,24 +10,29 @@ class Authorization extends React.Component {
   onLogin = event => {
     event.preventDefault();
 
-    const errors = this.props.loginFormStore.validateFields();
+    const {
+      loginFormStore: { validateFields, updateErrors, onSubmit }
+    } = this.props;
+    const errors = validateFields();
     if (Object.keys(errors).length > 0) {
-      this.props.loginFormStore.updateErrors(errors);
+      updateErrors(errors);
     } else {
-      this.props.loginFormStore.onSubmit();
+      onSubmit();
     }
   };
 
   render() {
     const {
-      username,
-      handleBlur,
-      onChangeValue,
-      errors,
-      password,
-      repeatPassword,
-      submitButton
-    } = this.props.loginFormStore;
+      loginFormStore: {
+        username,
+        handleBlur,
+        onChangeValue,
+        errors,
+        password,
+        repeatPassword,
+        submitButton
+      }
+    } = this.props;
     return (
       <form className="form card-body">
         <Field
@@ -72,14 +76,12 @@ class Authorization extends React.Component {
         >
           Submit
         </button>
-        {this.props.loginFormStore.errors.base ? (
-          <div className="invalid-feedback text-center">
-            {this.props.loginFormStore.errors.base}
-          </div>
+        {errors.base ? (
+          <div className="invalid-feedback text-center">{errors.base}</div>
         ) : null}
       </form>
     );
   }
 }
 
-export default AppContextHOC(Authorization);
+export default Authorization;

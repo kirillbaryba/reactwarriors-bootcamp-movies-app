@@ -21,8 +21,7 @@ export default class MovieItem extends React.Component {
           </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="buttons-wrap">
-            {/*
-            <FavoriteIcon
+            {/* <FavoriteIcon
               item={item}
               user={user}
               session_id={session_id}

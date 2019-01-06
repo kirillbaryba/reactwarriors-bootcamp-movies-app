@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import UISelect from "../UIComponents/UISelect";
 import { inject, observer } from "mobx-react";
 
@@ -17,6 +16,10 @@ class SortByYear extends React.Component {
       {
         label: "Все фильмы",
         value: ""
+      },
+      {
+        label: "2019",
+        value: "2019"
       },
       {
         label: "2018",
