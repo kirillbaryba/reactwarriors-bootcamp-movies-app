@@ -10,14 +10,14 @@ const MoviePageContent = props => {
         <div className="row">
           <div className="col-md-4">
             <div className="img-wrap">
-              {movie.poster_path ? (
+              {movie.poster_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2${
                     movie.poster_path
                   }`}
                   alt={movie.name}
                 />
-              ) : null}
+              )}
             </div>
           </div>
           <div className="col-md-8">
@@ -25,7 +25,7 @@ const MoviePageContent = props => {
             <span>({String(movie.release_date).substring(0, 4)})</span>
             <h3>Описание</h3>
             <div>{movie.overview ? movie.overview : "Нет описания"}</div>
-            <FavoriteIcon
+            {/* <FavoriteIcon
               item={movie}
               user={user}
               session_id={session_id}
@@ -36,7 +36,7 @@ const MoviePageContent = props => {
               user={user}
               session_id={session_id}
               toggleLoginModal={toggleLoginModal}
-            />
+            /> */}
           </div>
         </div>
       </div>

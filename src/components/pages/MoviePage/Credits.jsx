@@ -4,13 +4,9 @@ import CallApi from "../../../api/api";
 import { Container, Row, Col } from "reactstrap";
 
 class Credits extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      credits: []
-    };
-  }
+  state = {
+    credits: []
+  };
 
   componentDidMount() {
     CallApi.get(`/movie/${this.props.match.params.id}/credits`, {
@@ -24,22 +20,21 @@ class Credits extends React.Component {
 
   render() {
     const { credits } = this.state;
-    
+
     return (
       <Container>
         <Row>
-          {credits.map(actor =>
-            actor.profile_path !== null ? (
-              <Col xs="3" key={actor.cast_id}>
-                <img
-                  className="actor-img"
-                  src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-                  alt={actor.name}
-                />
-              </Col>
-            ) : (
-              false
-            )
+          {credits.map(
+            actor =>
+              actor.profile_path !== null && (
+                <Col xs="3" key={actor.cast_id}>
+                  <img
+                    className="actor-img"
+                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                    alt={actor.name}
+                  />
+                </Col>
+              )
           )}
         </Row>
       </Container>

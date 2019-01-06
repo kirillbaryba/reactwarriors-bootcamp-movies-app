@@ -1,15 +1,13 @@
 import React from "react";
 import UILoader from "../../UIComponents/UILoader";
-import AppContextHOC from "../../HOC/AppContextHOC";
 import MovieItem from "../../Movies/MovieItem";
 
 class UserFavoriteMovies extends React.Component {
   render() {
     const { favorite } = this.props;
-    if (favorite.length === 0) {
-      return <UILoader />;
-    }
-    return (
+    return !favorite ? (
+      <UILoader />
+    ) : (
       <div className="container">
         <div className="row">
           {favorite.map(item => (
@@ -23,4 +21,4 @@ class UserFavoriteMovies extends React.Component {
   }
 }
 
-export default AppContextHOC(UserFavoriteMovies);
+export default UserFavoriteMovies;

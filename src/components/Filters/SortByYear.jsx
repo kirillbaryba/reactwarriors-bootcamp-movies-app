@@ -1,17 +1,21 @@
 import React from "react";
-import PropTypes from "prop-types";
 import UISelect from "../UIComponents/UISelect";
+import { inject, observer } from "mobx-react";
 
-export default class SortByYear extends React.PureComponent {
-  static propTypes = {
-    onChangeFilters: PropTypes.func.isRequired,
-    primary_release_year: PropTypes.string.isRequired
-  };
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class SortByYear extends React.Component {
   static defaultProps = {
     options: [
       {
         label: "Все фильмы",
         value: ""
+      },
+      {
+        label: "2019",
+        value: "2019"
       },
       {
         label: "2018",
@@ -41,8 +45,14 @@ export default class SortByYear extends React.PureComponent {
   };
 
   render() {
-    const { primary_release_year, onChangeFilters, options } = this.props;
-    
+    const {
+      moviesPageStore: {
+        filters: { primary_release_year },
+        onChangeFilters
+      },
+      options
+    } = this.props;
+
     return (
       <UISelect
         id="primary_release_year"
@@ -65,3 +75,5 @@ export default class SortByYear extends React.PureComponent {
     );
   }
 }
+
+export default SortByYear;

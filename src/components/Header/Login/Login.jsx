@@ -7,7 +7,9 @@ import { inject, observer } from "mobx-react";
 @observer
 class Login extends React.Component {
   render() {
-    const { toggleLoginModal } = this.props.loginFormStore;
+    const {
+      loginFormStore: { toggleLoginModal }
+    } = this.props;
 
     return (
       <div>

@@ -4,18 +4,8 @@ import WatchlistIcon from "./WatchlistIcon";
 import { Link } from "react-router-dom";
 
 export default class MovieItem extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      favorite: false,
-      watchlist: false,
-      message: {} 
-    };
-  }
-
   render() {
-    const { item, user, session_id, toggleLoginModal } = this.props;
+    const { item } = this.props;
 
     return (
       <div className="card" style={{ width: "100%" }}>
@@ -31,7 +21,7 @@ export default class MovieItem extends React.Component {
           </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="buttons-wrap">
-            <FavoriteIcon
+            {/* <FavoriteIcon
               item={item}
               user={user}
               session_id={session_id}
@@ -42,7 +32,7 @@ export default class MovieItem extends React.Component {
               user={user}
               session_id={session_id}
               toggleLoginModal={toggleLoginModal}
-            />
+            /> */}
           </div>
         </div>
       </div>

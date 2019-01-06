@@ -23,11 +23,10 @@ class User extends React.Component {
     });
   };
 
-  logout = () => {
-    this.props.userStore.resetUserInfo();
-  };
-
   render() {
+    const {
+      userStore: { user, resetUserInfo }
+    } = this.props;
     return (
       <React.Fragment>
         <UncontrolledDropdown>
@@ -35,7 +34,7 @@ class User extends React.Component {
             <img
               className="rounded-circle"
               src={`https://www.gravatar.com/avatar/${
-                this.props.userStore.user.avatar.gravatar.hash
+                user.avatar.gravatar.hash
               }.jpg?s=40`}
               alt="avatar"
               onClick={this.logoutDropdownToggle}
@@ -43,7 +42,7 @@ class User extends React.Component {
           </DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>Выйти?</DropdownItem>
-            <DropdownItem onClick={this.logout}>Да</DropdownItem>
+            <DropdownItem onClick={() => resetUserInfo()}>Да</DropdownItem>
             <DropdownItem>Нет</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
@@ -52,4 +51,4 @@ class User extends React.Component {
   }
 }
 
-export default AppContextHOC(User);
+export default User;

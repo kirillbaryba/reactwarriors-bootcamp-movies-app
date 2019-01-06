@@ -70,10 +70,7 @@ class App extends React.Component {
             <Route path="/movie/:id" component={MoviePage} />
             <Route path="/favorites" component={UserFavoriteMovies} />
           </React.Fragment>
-          <LoginModal
-            showLoginModal={this.props.loginFormStore.showLoginModal}
-            toggleLoginModal={this.props.loginFormStore.toggleLoginModal}
-          />
+          <LoginModal />
         </AppContext.Provider>
       </Router>
     );

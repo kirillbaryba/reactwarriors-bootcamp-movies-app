@@ -4,16 +4,12 @@ import CallApi from "../../../api/api";
 import { Container } from "reactstrap";
 
 class Details extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      movie: "",
-      countries: [],
-      companies: [],
-      genres: []
-    };
-  }
+  state = {
+    movie: "",
+    countries: [],
+    companies: [],
+    genres: []
+  };
 
   componentDidMount() {
     CallApi.get(`/movie/${this.props.match.params.id}`, {

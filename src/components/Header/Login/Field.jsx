@@ -13,8 +13,6 @@ const Field = props => {
     onBlur
   } = props;
 
-  //console.log(this.props);
-
   return (
     <div className="form-group">
       <label htmlFor={id}>{labelText}</label>

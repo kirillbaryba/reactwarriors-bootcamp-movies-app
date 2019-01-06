@@ -4,13 +4,15 @@ import User from "./User";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
-@inject(({ userStore, loginFormStore }) => ({
-  userStore,
-  loginFormStore
+@inject(({ userStore }) => ({
+  userStore
 }))
 @observer
 class Header extends React.Component {
   render() {
+    const {
+      userStore: { isAuth }
+    } = this.props;
     return (
       <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
         <div className="container">
@@ -20,7 +22,7 @@ class Header extends React.Component {
                 Home
               </Link>
             </li>
-            {this.props.userStore.isAuth ? (
+            {isAuth ? (
               <li className="nav-item">
                 <Link style={{ color: "white" }} to="/favorites">
                   Favorites
@@ -30,7 +32,7 @@ class Header extends React.Component {
               false
             )}
           </ul>
-          {this.props.userStore.isAuth ? <User /> : <Login />}
+          {isAuth ? <User /> : <Login />}
         </div>
       </nav>
     );
