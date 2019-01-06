@@ -10,7 +10,7 @@ const defaultFilters = {
 };
 
 class MoviesPageStore {
-   constructor() {
+  constructor() {
     reaction(
       () => values(this.filters),
       () => {
@@ -26,12 +26,12 @@ class MoviesPageStore {
       }
     );
   }
-  
+
   @observable movies = [];
 
   @observable isLoading = false;
 
-  @observable filters = initialFilters;
+  @observable filters = defaultFilters;
 
   @observable genresList = [];
 
@@ -48,7 +48,7 @@ class MoviesPageStore {
       language: "ru-RU",
       sort_by,
       primary_release_year,
-      page: this.page,
+      page: this.page
     };
 
     if (with_genres.length > 0)

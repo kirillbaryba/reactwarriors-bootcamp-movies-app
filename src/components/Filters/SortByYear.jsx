@@ -1,5 +1,6 @@
 import React from "react";
 import UISelect from "../UIComponents/UISelect";
+import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 
 @inject(({ moviesPageStore }) => ({
