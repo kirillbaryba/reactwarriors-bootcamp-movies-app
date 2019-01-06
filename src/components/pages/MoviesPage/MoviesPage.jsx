@@ -4,10 +4,8 @@ import MoviesList from "../../Movies/MoviesList";
 import AppContextHOC from "../../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
 
-@inject(({ moviesPageStore, userStore, loginFormStore }) => ({
-  moviesPageStore,
-  userStore,
-  loginFormStore
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
 }))
 @observer
 class MoviesPage extends React.Component {
@@ -39,13 +37,7 @@ class MoviesPage extends React.Component {
             <div className="card" style={{ width: "100%" }}>
               <div className="card-body">
                 <h3>Фильтры:</h3>
-                <Filters
-                  filters={this.props.moviesPageStore.filters}
-                  onChangeFilters={this.props.moviesPageStore.onChangeFilters}
-                  page={this.props.moviesPageStore.page}
-                  total_pages={this.props.moviesPageStore.total_pages}
-                  onChangePage={this.props.moviesPageStore.onChangePage}
-                />
+                <Filters />
                 <button
                   type="button"
                   className="btn btn-danger w-100"
@@ -58,19 +50,7 @@ class MoviesPage extends React.Component {
           </div>
 
           <div className="col-8">
-            {
-              <MoviesList
-                filters={this.props.moviesPageStore.filters}
-                page={this.props.moviesPageStore.page}
-                onChangePage={this.props.moviesPageStore.onChangePage}
-                onChangeFilters={this.props.moviesPageStore.onChangeFilters}
-                getTotalPages={this.props.moviesPageStore.getTotalPages}
-                user={this.props.userStore.user}
-                toggleLoginModal={this.props.loginFormStore.toggleLoginModal}
-                showLoginModal={this.props.loginFormStore.showLoginModal}
-                session_id={this.props.userStore.session_id}
-              />
-            }
+            <MoviesList />
           </div>
         </div>
       </div>

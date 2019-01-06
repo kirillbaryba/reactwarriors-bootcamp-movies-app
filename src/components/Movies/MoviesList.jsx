@@ -1,40 +1,38 @@
 import React from "react";
 import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
-import MoviesHOC from "./MoviesHOC";
-import AppContextHOC from "../HOC/AppContextHOC";
+import Loader from "react-loader-spinner";
+import { inject, observer } from "mobx-react";
 
-const MoviesList = ({
-  movies,
-  user,
-  session_id,
-  showModal,
-  toggleLoginModal
-}) => (
-  <div className="row">
-    {movies.map(movie => {
-      return (
-        <div key={movie.id} className="col-6 mb-4">
-          <MovieItem
-            item={movie}
-            user={user}
-            session_id={session_id}
-            showModal={showModal}
-            toggleLoginModal={toggleLoginModal}
-          />
-        </div>
-      );
-    })}
-  </div>
-);
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class MoviesList extends React.Component {
+  componentDidMount() {
+    this.props.moviesPageStore.getMovies();
+  }
 
-MoviesList.defaultProps = {
-  movies: []
-};
+  render() {
+    const {
+      moviesPageStore: { isLoading, movies }
+    } = this.props;
+    return isLoading ? (
+      <span className="spinner">
+        <Loader type="TailSpin" color="salmon" height={80} width={80} />
+      </span>
+    ) : (
+      <div className="row">
+        {movies.map(movie => {
+          return (
+            <div key={movie.id} className="col-6 mb-4">
+              <MovieItem item={movie} />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+}
 
-MoviesList.propTypes = {
-  movies: PropTypes.array.isRequired,
-  user: PropTypes.object
-};
-
-export default AppContextHOC(MoviesHOC(MoviesList));
+export default MoviesList;

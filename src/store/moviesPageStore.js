@@ -3,50 +3,65 @@ import CallApi from "../api/api";
 
 configure({ enforceActions: "always" });
 
+const initialFilters = {
+  sort_by: "popularity.desc",
+  primary_release_year: "2018",
+  with_genres: []
+};
+
 class MoviesPageStore {
   constructor() {
     reaction(
       () => values(this.filters),
       () => {
-        this.getMovies(this.filters, 1);
+        this.onChangePage(1);
+        this.getMovies();
+      }
+    );
+
+    reaction(
+      () => this.page,
+      () => {
+        this.getMovies();
       }
     );
   }
-  //  autorun(reaction => {
-  //       () => values(this.page),
-  //       () => {
-  //         this.getMovies(this.filters, this.page);
-  //       }
-  //     };
-  //   });
+
+  // reactionByFilters = reaction(
+  //   () => values(this.filters),
+  //   () => {
+  //     this.onChangePage(1);
+  //     this.getMovies();
+  //   }
+  // );
+
+  // reactionByPage = reaction(
+  //   () => this.page,
+  //   () => {
+  //     this.getMovies();
+  //   }
+  // );
 
   @observable movies = [];
 
-  @observable filters = {
-    sort_by: "popularity.desc",
-    primary_release_year: "2018",
-    with_genres: []
-  };
+  @observable isLoading = false;
+
+  @observable filters = initialFilters;
 
   @observable page = 1;
 
   @observable total_pages = "";
 
-  @observable isLoading = false;
-
-  @observable favorite = [];
-  @observable watchlist = [];
-
   @action
-  getMovies = (filters, page) => {
+  getMovies = () => {
     this.updateLoading(true);
-    const { sort_by, primary_release_year, with_genres } = filters;
+    const { sort_by, primary_release_year, with_genres } = this.filters;
 
     const queryStringParams = {
       language: "ru-RU",
-      sort_by: sort_by,
-      page: page,
-      primary_release_year: primary_release_year
+      sort_by,
+      primary_release_year,
+      page: this.page
     };
 
     if (with_genres.length > 0)
@@ -83,11 +98,17 @@ class MoviesPageStore {
 
   @action
   clearAllFilters = () => {
-    this.filters = {
-      sort_by: "popularity.desc",
-      primary_release_year: "2018",
-      with_genres: []
-    };
+    for (let key in initialFilters) {
+      this.filters[key] = initialFilters[key];
+    }
+    // console.log("filters", this.filters);
+    // console.log("initialFilters", initialFilters);
+    // this.filters = initialFilters;
+    // this.filters = {
+    //   sort_by: "popularity.desc",
+    //   primary_release_year: "2018",
+    //   with_genres: []
+    // };
     this.page = 1;
     this.total_pages = "";
   };
@@ -96,6 +117,8 @@ class MoviesPageStore {
   onChangeFilters = event => {
     //const { user, session_id } = this.props;
     this.filters[event.target.name] = event.target.value;
+    console.log("onChangeFilters initialFilters", initialFilters);
+    console.log("onChangeFilters filters", this.filters);
     // if (user) {
     //   this.props.getAddedMovies(user.id, session_id, "favorite");
     //   this.props.getAddedMovies(user.id, session_id, "watchlist");
@@ -114,3 +137,12 @@ class MoviesPageStore {
 }
 
 export const moviesPageStore = new MoviesPageStore();
+// filters = {
+//   sort_by: "popularity.desc",
+//   primary_release_year: "2018",
+//   with_genres: []
+// };
+
+// =>
+
+// ["popularity.desc", "2018",  []]
