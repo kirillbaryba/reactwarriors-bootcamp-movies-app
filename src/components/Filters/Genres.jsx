@@ -14,7 +14,7 @@ class Genres extends React.Component {
       moviesPageStore: {
         genresList,
         resetGenres,
-        onChangeCheckbox,
+        onChangeGenres,
         filters: { with_genres }
       }
     } = this.props;
@@ -37,7 +37,7 @@ class Genres extends React.Component {
                   type="checkbox"
                   value={genre.id}
                   id={`genre${genre.id}`}
-                  onChange={onChangeCheckbox}
+                  onChange={onChangeGenres}
                   checked={with_genres.includes(String(genre.id))}
                 />
                 <label

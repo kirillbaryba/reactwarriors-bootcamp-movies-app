@@ -26,7 +26,6 @@ class LoginFormStore {
       base: null,
       [name]: null
     });
-    this.submitButton = false;
   };
 
   @action
@@ -98,11 +97,12 @@ class LoginFormStore {
           params: {
             session_id: data.session_id
           }
-        }).then(user => {
-          this.updateSubmitting(false);
-          userStore.updateAuth({ session_id, user });
-          this.toggleLoginModal();
         });
+      })
+      .then(user => {
+        this.updateSubmitting(false);
+        userStore.updateAuth({ session_id, user });
+        this.toggleLoginModal();
       })
       .catch(error => {
         this.updateSubmitting(false);

@@ -5,7 +5,7 @@ configure({ enforceActions: "always" });
 
 const defaultFilters = {
   sort_by: "popularity.desc",
-  primary_release_year: "2018",
+  primary_release_year: "2019",
   with_genres: []
 };
 
@@ -16,7 +16,7 @@ class MoviesPageStore {
 
   @observable filters = {
     sort_by: "popularity.desc",
-    primary_release_year: "2018",
+    primary_release_year: "2019",
     with_genres: []
   };
 
@@ -106,7 +106,7 @@ class MoviesPageStore {
   };
 
   @action
-  onChangeCheckbox = event => {
+  onChangeGenres = event => {
     this.onChangeFilters({
       target: {
         name: "with_genres",
