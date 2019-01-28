@@ -1,6 +1,4 @@
 import React from "react";
-import FavoriteIcon from "./FavoriteIcon";
-import WatchlistIcon from "./WatchlistIcon";
 import { Link } from "react-router-dom";
 
 export default class MovieItem extends React.Component {
@@ -20,20 +18,7 @@ export default class MovieItem extends React.Component {
             {item.title}
           </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
-          <div className="buttons-wrap">
-            {/* <FavoriteIcon
-              item={item}
-              user={user}
-              session_id={session_id}
-              toggleLoginModal={toggleLoginModal}
-            />
-            <WatchlistIcon
-              item={item}
-              user={user}
-              session_id={session_id}
-              toggleLoginModal={toggleLoginModal}
-            /> */}
-          </div>
+          <div className="buttons-wrap" />
         </div>
       </div>
     );

@@ -22,15 +22,6 @@ class Header extends React.Component {
                 Home
               </Link>
             </li>
-            {isAuth ? (
-              <li className="nav-item">
-                <Link style={{ color: "white" }} to="/favorites">
-                  Favorites
-                </Link>
-              </li>
-            ) : (
-              false
-            )}
           </ul>
           {isAuth ? <User /> : <Login />}
         </div>

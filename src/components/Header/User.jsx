@@ -5,7 +5,6 @@ import {
   DropdownItem,
   UncontrolledDropdown
 } from "reactstrap";
-import AppContextHOC from "../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
 
 @inject(({ userStore }) => ({

@@ -1,9 +1,7 @@
 import React from "react";
-import FavoriteIcon from "../../Movies/FavoriteIcon";
-import WatchlistIcon from "../../Movies/WatchlistIcon";
 
 const MoviePageContent = props => {
-  const { movie, user, session_id, toggleLoginModal } = props;
+  const { movie } = props;
   return (
     <div className="page-wrap mt-4 mb-4">
       <div className="container">
@@ -25,18 +23,6 @@ const MoviePageContent = props => {
             <span>({String(movie.release_date).substring(0, 4)})</span>
             <h3>Описание</h3>
             <div>{movie.overview ? movie.overview : "Нет описания"}</div>
-            {/* <FavoriteIcon
-              item={movie}
-              user={user}
-              session_id={session_id}
-              toggleLoginModal={toggleLoginModal}
-            />
-            <WatchlistIcon
-              item={movie}
-              user={user}
-              session_id={session_id}
-              toggleLoginModal={toggleLoginModal}
-            /> */}
           </div>
         </div>
       </div>
